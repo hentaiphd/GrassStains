@@ -10,6 +10,7 @@ package{
         public var velocityScale:Number = .05;
         public var accelerationScale:Number = .5;
         public var playerNum:Number;
+        public var kicking:Boolean = false;
 
         public function Player(x:Number, y:Number, player:Number):void{
             super(x,y);
@@ -74,16 +75,20 @@ package{
             //this.y = pos.y;
 
             if(FlxG.keys.LEFT) {
+                this.facing = LEFT;
                 this.acceleration.x = runSpeed*-1;
                 this.scale.x = _scaleFlipX;
                 this.scale.y = _scaleFlipY;
             } else if(FlxG.keys.RIGHT){
+                this.facing = RIGHT;
                 this.acceleration.x = runSpeed;
                 this.scale.x = -_scaleFlipX;
                 this.scale.y = _scaleFlipY;
             } else if(FlxG.keys.UP){
+                this.facing = UP;
                 this.acceleration.y = runSpeed*-1;
             } else if(FlxG.keys.DOWN){
+                this.facing = DOWN;
                 this.acceleration.y = runSpeed;
             }
         }
