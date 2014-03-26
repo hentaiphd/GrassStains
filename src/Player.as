@@ -10,7 +10,8 @@ package{
         public var velocityScale:Number = .05;
         public var accelerationScale:Number = .5;
         public var playerNum:Number;
-        public var kicking:Boolean = false;
+        public var power:Number = 0;
+        public var powerCap:Number = 7;
 
         public function Player(x:Number, y:Number, player:Number):void{
             super(x,y);
@@ -25,10 +26,23 @@ package{
 
             if(playerNum == 1){
                 playerOneMovement();
+
+                if(FlxG.keys.justReleased("SHIFT")){
+                    power++;
+                    if(power > powerCap){
+                        power = 0;
+                    }
+                }
             }
 
             if(playerNum == 2){
                 playerTwoMovement();
+                if(FlxG.keys.justReleased("SPACE")){
+                    power++;
+                    if(power > powerCap){
+                        power = 0;
+                    }
+                }
             }
 
         }

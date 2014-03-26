@@ -46,11 +46,11 @@ package
             FlxG.collide(playerOne,ball,kickCallback);
             FlxG.collide(playerTwo,ball,kickCallback);
 
-            debugText.text = playerOne.facing.toString();
+            debugText.text = playerOne.power.toString();
         }
 
         public function kickCallback(p:Player,b:Ball):void{
-            b.kickDirection(p.facing,5);
+            b.kickDirection(p.facing,1);
         }
     }
 }
