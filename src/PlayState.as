@@ -10,17 +10,30 @@ package
 
     import flash.display.*;
 
+
     public class PlayState extends FlxState
     {
         public var playerOne:Player;
         public var playerTwo:Player;
         public var ball:Ball;
+        public var ballShadow:FlxSprite;
+        public var p1Shadow:FlxSprite;
+        public var p2Shadow:FlxSprite;
         public var debugText:FlxText;
         public var timeFrame:Number = 0;
         public var timeSec:Number = 0;
 
+        public var bg:FlxSprite;
+
+         [Embed(source="data/sprites/bg.png")] private var ImgBG:Class;
+         [Embed(source="data/sprites/shadow.png")] private var ImgShadow:Class;
+
+
         override public function create():void
         {
+            bg = new FlxSprite(0,0,ImgBG);
+            this.add(bg);
+
             FlxG.mouse.show();
             debugText = new FlxText(100,100,100,"");
             this.add(debugText);
