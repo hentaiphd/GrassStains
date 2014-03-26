@@ -21,6 +21,7 @@ package{
 
         override public function update():void{
             super.update();
+            borderCollide();
 
             if(playerNum == 1){
                 playerOneMovement();
@@ -148,6 +149,17 @@ package{
             } else if(FlxG.keys.S){
                 this.acceleration.y = runSpeed;
             }
+        }
+
+        public function borderCollide():void{
+            if(this.x >= FlxG.width - width)
+                this.x = FlxG.width - width;
+            if(this.x <= 0)
+                this.x = 0;
+            if(this.y >= FlxG.height - height)
+                this.y = FlxG.height - height;
+            if(this.y <= 0)
+                this.y = 0;
         }
     }
 }
