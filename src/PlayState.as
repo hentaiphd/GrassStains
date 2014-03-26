@@ -38,6 +38,15 @@ package
             debugText = new FlxText(100,100,100,"");
             this.add(debugText);
 
+            ballShadow = new FlxSprite(0,0,ImgShadow);
+            add(ballShadow);
+
+            p1Shadow = new FlxSprite(0,0,ImgShadow);
+            add(p1Shadow);
+
+            p2Shadow = new FlxSprite(0,0,ImgShadow);
+            add(p2Shadow);
+
             playerOne = new Player(200,200,1);
             this.add(playerOne);
 
@@ -55,6 +64,18 @@ package
             if(timeFrame%50 == 0){
                 timeSec++;
             }
+
+            //realign shadows w/ locations of objects
+
+            p1Shadow.x = playerOne.x - p1Shadow.width/2;
+            p1Shadow.y = playerOne.y; - p1Shadow.height/2;
+
+            p2Shadow.x = playerTwo.x - p2Shadow.width/2;
+            p2Shadow.y = playerTwo.y - p2Shadow.height/2;
+
+            ballShadow.x = ball.x - ballShadow.width/2;
+            ballShadow.y = ball.y - ballShadow.height/2;
+
 
             FlxG.collide(playerOne,ball,kickCallback);
             FlxG.collide(playerTwo,ball,kickCallback);
