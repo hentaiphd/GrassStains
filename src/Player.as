@@ -12,17 +12,23 @@ package{
         public var playerNum:Number;
         public var power:Number = 0;
         public var powerCap:Number = 7;
+        public var debugText:FlxText;
 
         public function Player(x:Number, y:Number, player:Number):void{
             super(x,y);
             playerNum = player;
             makeGraphic(10,10);
+            debugText = new FlxText(x-20,y-30,100,"");
+            FlxG.state.add(debugText);
         }
 
 
         override public function update():void{
             super.update();
             borderCollide();
+            debugText.text = power.toString();
+            debugText.x = this.x-20;
+            debugText.y = this.y-30;
 
             if(playerNum == 1){
                 playerOneMovement();

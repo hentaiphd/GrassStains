@@ -45,8 +45,6 @@ package
 
             FlxG.collide(playerOne,ball,kickCallback);
             FlxG.collide(playerTwo,ball,kickCallback);
-
-            debugText.text = playerOne.power.toString();
         }
 
         public function kickCallback(p:Player,b:Ball):void{
