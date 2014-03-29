@@ -90,18 +90,18 @@ package
             ballShadow.x = ball.x - ballShadow.width/2;
             ballShadow.y = ball.y - ballShadow.height/2;
 
-            FlxG.collide(playerOne,ball,playerOneKick);
-            FlxG.collide(playerTwo,ball,playerTwoKick);
+            FlxG.collide(playerOne,ball,playerOneGrab);
+            FlxG.collide(playerTwo,ball,playerTwoGrab);
 
             if(ball.dribbleOne){
-                ball.dribble(playerOne,1,playerOne.power);
+                ball.dribble(playerOne,playerOne.power);
             }
             if(ball.dribbleTwo){
-                ball.dribble(playerTwo,2,playerOne.power);
+                ball.dribble(playerTwo,playerTwo.power);
             }
         }
 
-        public function playerOneKick(p:Player,b:Ball):void{
+        public function playerOneGrab(p:Player,b:Ball):void{
             if(b.runSpeed > 0){
                 if(b.kicking == 2){
                     FlxG.switchState(new MenuState());
@@ -111,7 +111,7 @@ package
             b.dribbleOne = true;
         }
 
-        public function playerTwoKick(p:Player,b:Ball):void{
+        public function playerTwoGrab(p:Player,b:Ball):void{
             if(b.runSpeed > 0){
                 if(b.kicking == 1){
                     FlxG.switchState(new MenuState());

@@ -157,16 +157,20 @@ package{
             //this.y = pos.y;
 
             if(FlxG.keys.A) {
+                this.facing = LEFT;
                 this.acceleration.x = runSpeed*-1;
                 this.scale.x = _scaleFlipX;
                 this.scale.y = _scaleFlipY;
             } else if(FlxG.keys.D){
+                this.facing = RIGHT;
                 this.acceleration.x = runSpeed;
                 this.scale.x = -_scaleFlipX;
                 this.scale.y = _scaleFlipY;
             } else if(FlxG.keys.W){
+                this.facing = UP;
                 this.acceleration.y = runSpeed*-1;
             } else if(FlxG.keys.S){
+                this.facing = DOWN;
                 this.acceleration.y = runSpeed;
             }
         }

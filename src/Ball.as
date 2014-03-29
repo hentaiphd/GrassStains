@@ -35,12 +35,12 @@ package{
             super.update();
             borderCollide();
 
-            kickBall();
+            ballMovement();
 
             this.y = this.yPos - this.air;
         }
 
-        public function kickBall():void{
+        public function ballMovement():void{
             this.acceleration.x = 0;
             this.acceleration.y = 0;
             this.drag.x = .5;
@@ -72,36 +72,50 @@ package{
             }
         }
 
-        public function dribble(p:Player, num:Number, power:Number):void{
-            if(FlxG.keys.justReleased("SHIFT")){
-                kickDirection(p.facing,power);
-                kicking = num;
-                p.power = 0;
-                this.dribbleOne = false;
-                this.dribbleTwo = false;
-            } else {
-                this.x = p.x+20;
-                this.yPos = p.y+20;
+        public function dribble(p:Player,power:Number):void{
+            if(dribbleOne){
+                if(FlxG.keys.justReleased("SHIFT")){
+                    kickBall(p,power);
+                    kicking = 1;
+                    p.power = 0;
+                    this.dribbleOne = false;
+                    this.dribbleTwo = false;
+                } else {
+                    this.x = p.x+20;
+                    this.yPos = p.y+20;
+                }
+            }
+
+            if(dribbleTwo){
+                if(FlxG.keys.justReleased("SPACE")){
+                    kickBall(p,power);
+                    kicking = 2;
+                    p.power = 0;
+                    this.dribbleOne = false;
+                    this.dribbleTwo = false;
+                } else {
+                    this.x = p.x+20;
+                    this.yPos = p.y+20;
+                }
             }
         }
 
-        public function kickDirection(d:Number, p:Number):void{
-            dir = d;
+        public function kickBall(player:Player, p:Number):void{
             power = p;
 
-            var rand:Number = Math.floor(Math.random()*power);
+            var rand:Number = (Math.floor(Math.random()*power))+power/2;
 
-            if(dir == 1) { //left
+            if(player.facing == LEFT) { //left
                 this.velocity.x = rand*-1;
                 this.scale.x = _scaleFlipX;
                 this.scale.y = _scaleFlipY;
-            } else if(dir == 16){ //right
+            } else if(player.facing == RIGHT){ //right
                 this.velocity.x = rand;
                 this.scale.x = -_scaleFlipX;
                 this.scale.y = _scaleFlipY;
-            } else if(dir == 256){ //up
+            } else if(player.facing == UP){ //up
                 this.velocity.y = rand*-1;
-            } else if(dir == 4096){ //down
+            } else if(player.facing == DOWN){ //down
                 this.velocity.y = rand;
             }
         }
