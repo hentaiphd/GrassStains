@@ -12,7 +12,7 @@ package{
         public var timeFrame:Number = 0;
         public var timeSec:Number = 0;
         public var dir:Number = 0;
-        public var kicking:Boolean = false;
+        public var kicking:Number = 0;
         public var power:Number = 0;
 
         public function Ball(x:Number, y:Number):void{
