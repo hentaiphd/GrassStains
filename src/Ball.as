@@ -16,7 +16,9 @@ package{
         public var power:Number = 0;
 
         public var yPos:Number;
-        public var air:Number = 0;
+        public var air:Number = 50;
+        public var fallSpeed:Number = 0;
+        public var gravity:Number = .9;
 
         // out of 1. 1 means the ball loses no velocity when bouncing.
         public var bounciness:Number = .75;
@@ -49,7 +51,25 @@ package{
 
             kickBall();
 
-            //this.y = this.yPos + this.air;
+            if (air > 0)
+            {
+                fallSpeed += gravity;
+
+            } 
+            else if (fallSpeed > 5)
+            {
+                air = 0;
+                fallSpeed *= -bounciness;
+            }
+            else
+            {
+                air = 0;
+                fallSpeed = 0;
+            }
+
+            air -= fallSpeed;
+
+            this.y = this.yPos - this.air;
         }
 
         public function kickBall():void{
