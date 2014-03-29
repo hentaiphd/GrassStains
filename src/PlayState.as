@@ -22,6 +22,10 @@ package
         public var debugText:FlxText;
         public var timeFrame:Number = 0;
         public var timeSec:Number = 0;
+        public var netBack:FlxSprite;
+        public var netFront:FlxSprite;
+        public var net2Back:FlxSprite;
+        public var net2Front:FlxSprite;
         public var goalLeft:Goal;
         public var goalRight:Goal;
 
@@ -31,6 +35,8 @@ package
 
          [Embed(source="data/sprites/bg.png")] private var ImgBG:Class;
          [Embed(source="data/sprites/shadow.png")] private var ImgShadow:Class;
+         [Embed(source="data/sprites/net_back.png")] private var ImgNetBack:Class;
+         [Embed(source="data/sprites/net_top.png")] private var ImgNetFront:Class;
 
 
 
@@ -43,6 +49,19 @@ package
             debugText = new FlxText(100,100,100,"");
             this.add(debugText);
 
+            netBack = new FlxSprite(0,110,ImgNetBack);
+            netFront = new FlxSprite(0,110,ImgNetFront);
+            add(netBack);
+
+            net2Back = new FlxSprite(0,110,ImgNetBack);
+            net2Front = new FlxSprite(0,110,ImgNetFront);
+            net2Back.scale.x *= -1;
+            net2Front.scale.x *= -1;
+            net2Back.x = FlxG.width - net2Back.width;
+            net2Front.x = FlxG.width - net2Front.width;
+            add(net2Back);
+
+
             ballShadow = new FlxSprite(0,0,ImgShadow);
             add(ballShadow);
 
@@ -52,10 +71,11 @@ package
             p2Shadow = new FlxSprite(0,0,ImgShadow);
             add(p2Shadow);
 
-            goalLeft = new Goal(0,300,2);
+            goalLeft = new Goal(0,215,2);
             this.add(goalLeft);
 
-            goalRight = new Goal(650,300,1);
+            goalRight = new Goal(FlxG.width,215,1);
+            goalRight.x -= goalRight.width;
             this.add(goalRight);
 
             playerOne = new Player(200,200,1);
@@ -66,6 +86,9 @@ package
 
             ball = new Ball(350,350);
             this.add(ball);
+
+            add(netFront);
+            add(net2Front);
         }
 
         override public function update():void

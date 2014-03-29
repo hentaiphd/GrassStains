@@ -123,8 +123,8 @@ package{
                     this.dribbleOne = false;
                     this.dribbleTwo = false;
                 } else {
-                    this.x = p.x+ (p.scale.x * -20);
-                    this.yPos = p.y+p.height;
+                    this.x = p.pos.x+ (p.scale.x * -20);
+                    this.yPos = p.pos.y+p.height;
                 }
             }
 
@@ -136,8 +136,8 @@ package{
                     this.dribbleOne = false;
                     this.dribbleTwo = false;
                 } else {
-                    this.x = p.x+(p.scale.x * -20);
-                    this.yPos = p.y+p.height;
+                    this.x = p.pos.x+(p.scale.x * -20);
+                    this.yPos = p.pos.y+p.height;
                 }
             }
         }
@@ -145,7 +145,7 @@ package{
         public function kickBall(player:Player, p:Number):void{
             power = p;
 
-            var rand:Number = (Math.floor(Math.random()*power))*5;
+            var rand:Number = 15 * (power/100);
 
             if(player.facing == LEFT) { //left
                 this.velocity.x = rand*-1;
