@@ -92,32 +92,33 @@ package
 
             FlxG.collide(playerOne,ball,playerOneKick);
             FlxG.collide(playerTwo,ball,playerTwoKick);
+
+            if(ball.dribbleOne){
+                ball.dribble(playerOne,1,playerOne.power);
+            }
+            if(ball.dribbleTwo){
+                ball.dribble(playerTwo,2,playerOne.power);
+            }
         }
 
         public function playerOneKick(p:Player,b:Ball):void{
-            b.kickDirection(p.facing,1);
-
             if(b.runSpeed > 0){
                 if(b.kicking == 2){
                     FlxG.switchState(new MenuState());
                 }
             }
 
-            b.kicking = 1;
-            p.power = 0;
+            b.dribbleOne = true;
         }
 
         public function playerTwoKick(p:Player,b:Ball):void{
-            b.kickDirection(p.facing,1);
-
             if(b.runSpeed > 0){
                 if(b.kicking == 1){
                     FlxG.switchState(new MenuState());
                 }
             }
 
-            b.kicking = 2;
-            p.power = 0;
+            b.dribbleTwo = true;
         }
     }
 }

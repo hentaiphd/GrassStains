@@ -2,7 +2,7 @@ package{
     import org.flixel.*;
 
     public class Ball extends FlxSprite{
-        public var runSpeed:Number = 0;
+        public var runSpeed:Number = 10;
         public var _scale:FlxPoint = new FlxPoint(1,1);
         public var _scaleFlipX:Number = 1;
         public var _scaleFlipY:Number = 1;
@@ -14,6 +14,8 @@ package{
         public var dir:Number = 0;
         public var kicking:Number = 0;
         public var power:Number = 0;
+        public var dribbleOne:Boolean = false;
+        public var dribbleTwo:Boolean = false;
 
         public var yPos:Number;
         public var air:Number = 0;
@@ -70,33 +72,37 @@ package{
             }
         }
 
+        public function dribble(p:Player, num:Number, power:Number):void{
+            if(FlxG.keys.justReleased("SHIFT")){
+                kickDirection(p.facing,power);
+                kicking = num;
+                p.power = 0;
+                this.dribbleOne = false;
+                this.dribbleTwo = false;
+            } else {
+                this.x = p.x+20;
+                this.yPos = p.y+20;
+            }
+        }
+
         public function kickDirection(d:Number, p:Number):void{
             dir = d;
             power = p;
 
-            if(power > 0){
-                runSpeed = .01;
-                velocityScale = .001;
-            } else if(power > 3){
-                runSpeed = .1;
-                velocityScale = .01;
-            }else if(power > 5){
-                runSpeed = 1;
-                velocityScale = .1;
-            }
+            var rand:Number = Math.floor(Math.random()*power);
 
             if(dir == 1) { //left
-                this.acceleration.x = runSpeed*-1;
+                this.velocity.x = rand*-1;
                 this.scale.x = _scaleFlipX;
                 this.scale.y = _scaleFlipY;
             } else if(dir == 16){ //right
-                this.acceleration.x = runSpeed;
+                this.velocity.x = rand;
                 this.scale.x = -_scaleFlipX;
                 this.scale.y = _scaleFlipY;
             } else if(dir == 256){ //up
-                this.acceleration.y = runSpeed*-1;
+                this.velocity.y = rand*-1;
             } else if(dir == 4096){ //down
-                this.acceleration.y = runSpeed;
+                this.velocity.y = rand;
             }
         }
 
