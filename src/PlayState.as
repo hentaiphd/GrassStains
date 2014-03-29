@@ -56,7 +56,7 @@ package
             goalLeft.immovable = true;
             this.add(goalLeft);
 
-            goalRight = new FlxSprite(500,300);
+            goalRight = new FlxSprite(650,300);
             goalRight.makeGraphic(100,100,0xffffffff);
             goalRight.immovable = true;
             this.add(goalRight);
@@ -98,7 +98,7 @@ package
             b.kickDirection(p.facing,1);
 
             if(b.runSpeed > 0){
-                if(b.kicking != 1){
+                if(b.kicking == 2){
                     FlxG.switchState(new MenuState());
                 }
             }
@@ -111,7 +111,7 @@ package
             b.kickDirection(p.facing,1);
 
             if(b.runSpeed > 0){
-                if(b.kicking != 2){
+                if(b.kicking == 1){
                     FlxG.switchState(new MenuState());
                 }
             }

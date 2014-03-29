@@ -33,26 +33,17 @@ package{
             super.update();
             borderCollide();
 
-            if(power > 0){
-                runSpeed = .01;
-                velocityScale = .001;
-                accelerationScale = .001;
-            } else if(power > 3){
-                runSpeed = .1;
-                velocityScale = .01;
-                accelerationScale = .01;
-            }else if(power > 5){
-                runSpeed = 1;
-                velocityScale = .1;
-                accelerationScale = .1;
-            }
-
             kickBall();
 
-            //this.y = this.yPos + this.air;
+            this.y = this.yPos - this.air;
         }
 
         public function kickBall():void{
+            this.acceleration.x = 0;
+            this.acceleration.y = 0;
+            this.drag.x = .5;
+            this.drag.y = .5;
+
             if(this.velocity.x > 0){
                 this.velocity.x -= velocityScale;
             } else if(this.velocity.x < 0){
@@ -63,18 +54,6 @@ package{
                 this.velocity.y -= velocityScale;
             } else if(this.velocity.y < 0){
                 this.velocity.y += velocityScale;
-            }
-
-            if(this.acceleration.x > 0){
-                this.acceleration.x -= accelerationScale;
-            } else if(this.acceleration.x < 0){
-                this.acceleration.x += accelerationScale;
-            }
-
-            if(this.acceleration.y > 0){
-                this.acceleration.y -= accelerationScale;
-            } else if(this.acceleration.y < 0){
-                this.acceleration.y += accelerationScale;
             }
 
             this.velocity.x += this.acceleration.x;
@@ -89,6 +68,23 @@ package{
             if(Math.abs(this.velocity.y) >= maxSpeed){
                 this.velocity.y = (this.velocity.y/Math.abs(this.velocity.y))*maxSpeed;
             }
+        }
+
+        public function kickDirection(d:Number, p:Number):void{
+            dir = d;
+            power = p;
+
+            if(power > 0){
+                runSpeed = .01;
+                velocityScale = .001;
+            } else if(power > 3){
+                runSpeed = .1;
+                velocityScale = .01;
+            }else if(power > 5){
+                runSpeed = 1;
+                velocityScale = .1;
+            }
+
             if(dir == 1) { //left
                 this.acceleration.x = runSpeed*-1;
                 this.scale.x = _scaleFlipX;
@@ -102,13 +98,6 @@ package{
             } else if(dir == 4096){ //down
                 this.acceleration.y = runSpeed;
             }
-
-            
-        }
-
-        public function kickDirection(d:Number, p:Number):void{
-            dir = d;
-            power = p;
         }
 
         public function borderCollide():void{
