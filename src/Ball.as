@@ -40,6 +40,14 @@ package{
             this.y = this.yPos - this.air;
         }
 
+        public function resetBall():void{
+            kicking = 0;
+            this.velocity.x = 0;
+            this.velocity.y = 0;
+            this.x = 350;
+            this.y = 350;
+        }
+
         public function ballMovement():void{
             this.acceleration.x = 0;
             this.acceleration.y = 0;

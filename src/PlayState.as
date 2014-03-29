@@ -22,8 +22,8 @@ package
         public var debugText:FlxText;
         public var timeFrame:Number = 0;
         public var timeSec:Number = 0;
-        public var goalLeft:FlxSprite;
-        public var goalRight:FlxSprite;
+        public var goalLeft:Goal;
+        public var goalRight:Goal;
 
         public static var groundHeight:Number = 80;
 
@@ -51,14 +51,10 @@ package
             p2Shadow = new FlxSprite(0,0,ImgShadow);
             add(p2Shadow);
 
-            goalLeft = new FlxSprite(0,300);
-            goalLeft.makeGraphic(100,100,0xffffffff);
-            goalLeft.immovable = true;
+            goalLeft = new Goal(0,300,2);
             this.add(goalLeft);
 
-            goalRight = new FlxSprite(650,300);
-            goalRight.makeGraphic(100,100,0xffffffff);
-            goalRight.immovable = true;
+            goalRight = new Goal(650,300,1);
             this.add(goalRight);
 
             playerOne = new Player(200,200,1);
@@ -94,6 +90,8 @@ package
 
             FlxG.collide(playerOne,ball,playerOneGrab);
             FlxG.collide(playerTwo,ball,playerTwoGrab);
+            FlxG.collide(ball,goalRight,score);
+            FlxG.collide(ball,goalLeft,score);
 
             if(ball.dribbleOne){
                 ball.dribble(playerOne,playerOne.power);
@@ -103,10 +101,17 @@ package
             }
         }
 
+        public function score(b:Ball,g:Goal):void{
+            g.score++;
+            b.resetBall();
+        }
+
         public function playerOneGrab(p:Player,b:Ball):void{
             if(b.runSpeed > 0){
                 if(b.kicking == 2){
-                    FlxG.switchState(new MenuState());
+                    if(b.velocity.x > 5){
+                        FlxG.switchState(new MenuState());
+                    }
                 }
             }
 
@@ -116,7 +121,9 @@ package
         public function playerTwoGrab(p:Player,b:Ball):void{
             if(b.runSpeed > 0){
                 if(b.kicking == 1){
-                    FlxG.switchState(new MenuState());
+                    if(b.velocity.x > 5){
+                        FlxG.switchState(new MenuState());
+                    }
                 }
             }
 
