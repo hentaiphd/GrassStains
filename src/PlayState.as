@@ -57,7 +57,7 @@ package
             goalLeft.immovable = true;
             this.add(goalLeft);
 
-            goalRight = new FlxSprite(500,300);
+            goalRight = new FlxSprite(650,300);
             goalRight.makeGraphic(100,100,0xffffffff);
             goalRight.immovable = true;
             this.add(goalRight);
@@ -75,6 +75,8 @@ package
         override public function update():void
         {
             super.update();
+            debugText.text = ball.velocity.x.toString();
+
             timeFrame++;
             if(timeFrame%50 == 0){
                 timeSec++;
@@ -89,36 +91,43 @@ package
             p2Shadow.y = playerTwo.y - p2Shadow.height/2;
 
             ballShadow.x = ball.x - ballShadow.width/2;
-            ballShadow.y = ball.yPos + ballShadow.height/2 + playerOne.height;
+            ballShadow.y = ball.yPos + ball.height * .75;
 
-            FlxG.collide(playerOne,ball,playerOneKick);
-            FlxG.collide(playerTwo,ball,playerTwoKick);
+            FlxG.overlap(playerOne,ball,playerOneGrab);
+            FlxG.overlap(playerTwo,ball,playerTwoGrab);
+
+            if(ball.dribbleOne){
+                ball.dribble(playerOne,playerOne.power);
+            }
+            if(ball.dribbleTwo){
+                ball.dribble(playerTwo,playerTwo.power);
+            }
         }
 
-        public function playerOneKick(p:Player,b:Ball):void{
-            b.kickDirection(p.facing,1);
-
+        public function playerOneGrab(p:Player,b:Ball):void{
             if(b.runSpeed > 0){
-                if(b.kicking != 1){
+                if(b.kicking == 2){
                     FlxG.switchState(new MenuState());
                 }
             }
 
-            b.kicking = 1;
-            p.power = 0;
+            if (!b.JUST_KICKED || b.kicking == 2)
+            {
+                 b.dribbleOne = true;
+            }
         }
 
-        public function playerTwoKick(p:Player,b:Ball):void{
-            b.kickDirection(p.facing,1);
-
+        public function playerTwoGrab(p:Player,b:Ball):void{
             if(b.runSpeed > 0){
-                if(b.kicking != 2){
+                if(b.kicking == 1){
                     FlxG.switchState(new MenuState());
                 }
             }
 
-            b.kicking = 2;
-            p.power = 0;
+            if (!b.JUST_KICKED || b.kicking == 2)
+            {
+                 b.dribbleTwo = true;
+            }
         }
     }
 }

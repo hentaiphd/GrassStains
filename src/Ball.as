@@ -2,7 +2,7 @@ package{
     import org.flixel.*;
 
     public class Ball extends FlxSprite{
-        public var runSpeed:Number = 0;
+        public var runSpeed:Number = 10;
         public var _scale:FlxPoint = new FlxPoint(1,1);
         public var _scaleFlipX:Number = 1;
         public var _scaleFlipY:Number = 1;
@@ -14,11 +14,17 @@ package{
         public var dir:Number = 0;
         public var kicking:Number = 0;
         public var power:Number = 0;
+        public var dribbleOne:Boolean = false;
+        public var dribbleTwo:Boolean = false;
 
         public var yPos:Number;
         public var air:Number = 50;
         public var fallSpeed:Number = 0;
         public var gravity:Number = .9;
+
+        public var JUST_KICKED:Boolean = false;
+        public var kickTimer:Number = 0;
+        public var maxKickTimer:Number = 1;
 
         // out of 1. 1 means the ball loses no velocity when bouncing.
         public var bounciness:Number = .75;
@@ -35,28 +41,56 @@ package{
             super.update();
             borderCollide();
 
-            if(power > 0){
-                runSpeed = .01;
-                velocityScale = .001;
-                accelerationScale = .001;
-            } else if(power > 3){
-                runSpeed = .1;
-                velocityScale = .01;
-                accelerationScale = .01;
-            }else if(power > 5){
-                runSpeed = 1;
-                velocityScale = .1;
-                accelerationScale = .1;
+            ballMovement();
+
+            if (kickTimer > 0)
+            {
+                kickTimer -= FlxG.elapsed;
+            }
+            else
+            {
+                kickTimer = 0;
+                JUST_KICKED = false;
+            }
+        }
+
+        public function ballMovement():void{
+            this.acceleration.x = 0;
+            this.acceleration.y = 0;
+            this.drag.x = .5;
+            this.drag.y = .5;
+
+            if(this.velocity.x > 0){
+                this.velocity.x -= velocityScale;
+            } else if(this.velocity.x < 0){
+                this.velocity.x += velocityScale;
             }
 
-            kickBall();
+            if(this.velocity.y > 0){
+                this.velocity.y -= velocityScale;
+            } else if(this.velocity.y < 0){
+                this.velocity.y += velocityScale;
+            }
+
+            this.velocity.x += this.acceleration.x;
+            this.velocity.y += this.acceleration.y;
+
+            this.x += velocity.x;
+            this.yPos += velocity.y;
+
+            if(Math.abs(this.velocity.x) >= maxSpeed){
+                this.velocity.x = (this.velocity.x/Math.abs(this.velocity.x))*maxSpeed;
+            }
+            if(Math.abs(this.velocity.y) >= maxSpeed){
+                this.velocity.y = (this.velocity.y/Math.abs(this.velocity.y))*maxSpeed;
+            }
 
             if (air > 0)
             {
                 fallSpeed += gravity;
 
             } 
-            else if (fallSpeed > 5)
+            else if (fallSpeed > 3)
             {
                 air = 0;
                 fallSpeed *= -bounciness;
@@ -72,63 +106,58 @@ package{
             this.y = this.yPos - this.air;
         }
 
-        public function kickBall():void{
-            if(this.velocity.x > 0){
-                this.velocity.x -= velocityScale;
-            } else if(this.velocity.x < 0){
-                this.velocity.x += velocityScale;
+        public function dribble(p:Player,power:Number):void{
+            if(dribbleOne){
+                if(FlxG.keys.justReleased("SHIFT")){
+                    kickBall(p,power);
+                    kicking = 1;
+                    p.power = 0;
+                    this.dribbleOne = false;
+                    this.dribbleTwo = false;
+                } else {
+                    this.x = p.x+ (p.scale.x * -20);
+                    this.yPos = p.y+p.height;
+                }
             }
 
-            if(this.velocity.y > 0){
-                this.velocity.y -= velocityScale;
-            } else if(this.velocity.y < 0){
-                this.velocity.y += velocityScale;
+            if(dribbleTwo){
+                if(FlxG.keys.justReleased("SPACE")){
+                    kickBall(p,power);
+                    kicking = 2;
+                    p.power = 0;
+                    this.dribbleOne = false;
+                    this.dribbleTwo = false;
+                } else {
+                    this.x = p.x+(p.scale.x * -20);
+                    this.yPos = p.y+p.height;
+                }
             }
-
-            if(this.acceleration.x > 0){
-                this.acceleration.x -= accelerationScale;
-            } else if(this.acceleration.x < 0){
-                this.acceleration.x += accelerationScale;
-            }
-
-            if(this.acceleration.y > 0){
-                this.acceleration.y -= accelerationScale;
-            } else if(this.acceleration.y < 0){
-                this.acceleration.y += accelerationScale;
-            }
-
-            this.velocity.x += this.acceleration.x;
-            this.velocity.y += this.acceleration.y;
-
-            this.x += velocity.x;
-            this.yPos += velocity.y;
-
-            if(Math.abs(this.velocity.x) >= maxSpeed){
-                this.velocity.x = (this.velocity.x/Math.abs(this.velocity.x))*maxSpeed;
-            }
-            if(Math.abs(this.velocity.y) >= maxSpeed){
-                this.velocity.y = (this.velocity.y/Math.abs(this.velocity.y))*maxSpeed;
-            }
-            if(dir == 1) { //left
-                this.acceleration.x = runSpeed*-1;
-                this.scale.x = _scaleFlipX;
-                this.scale.y = _scaleFlipY;
-            } else if(dir == 16){ //right
-                this.acceleration.x = runSpeed;
-                this.scale.x = -_scaleFlipX;
-                this.scale.y = _scaleFlipY;
-            } else if(dir == 256){ //up
-                this.acceleration.y = runSpeed*-1;
-            } else if(dir == 4096){ //down
-                this.acceleration.y = runSpeed;
-            }
-
-            
         }
 
-        public function kickDirection(d:Number, p:Number):void{
-            dir = d;
+        public function kickBall(player:Player, p:Number):void{
             power = p;
+
+            var rand:Number = (Math.floor(Math.random()*power))*5;
+
+            if(player.facing == LEFT) { //left
+                this.velocity.x = rand*-1;
+                this.scale.x = _scaleFlipX;
+                this.scale.y = _scaleFlipY;
+            } else if(player.facing == RIGHT){ //right
+                this.velocity.x = rand;
+                this.scale.x = -_scaleFlipX;
+                this.scale.y = _scaleFlipY;
+            } else if(player.facing == UP){ //up
+                this.velocity.y = rand*-1;
+            } else if(player.facing == DOWN){ //down
+                this.velocity.y = rand;
+            }
+
+            this.air = 1;
+            this.fallSpeed = -(p/5);
+
+            kickTimer = maxKickTimer;
+            JUST_KICKED = true;
         }
 
         public function borderCollide():void{
