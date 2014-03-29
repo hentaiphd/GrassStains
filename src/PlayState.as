@@ -23,6 +23,8 @@ package
         public var timeFrame:Number = 0;
         public var timeSec:Number = 0;
 
+        public static var groundHeight:Number = 80;
+
         public var bg:FlxSprite;
 
          [Embed(source="data/sprites/bg.png")] private var ImgBG:Class;

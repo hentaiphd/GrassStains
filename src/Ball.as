@@ -15,8 +15,17 @@ package{
         public var kicking:Boolean = false;
         public var power:Number = 0;
 
+        public var yPos:Number;
+        public var air:Number = 0;
+
+        // out of 1. 1 means the ball loses no velocity when bouncing.
+        public var bounciness:Number = .75;
+
+        [Embed(source="data/sprites/ball_whole.png")] private var ImgBall:Class;
+
         public function Ball(x:Number, y:Number):void{
-            super(x,y);
+            super(x,y,ImgBall);
+            this.yPos = y;
 
         }
 
@@ -37,6 +46,8 @@ package{
             }*/
 
             kickBall();
+
+            //this.y = this.yPos + this.air;
         }
 
         public function kickBall():void{
@@ -68,7 +79,7 @@ package{
             this.velocity.y += this.acceleration.y;
 
             this.x += velocity.x;
-            this.y += velocity.y;
+            this.yPos += velocity.y;
 
             if(Math.abs(this.velocity.x) >= maxSpeed){
                 this.velocity.x = (this.velocity.x/Math.abs(this.velocity.x))*maxSpeed;
@@ -89,6 +100,8 @@ package{
             } else if(dir == 4096){ //down
                 this.acceleration.y = runSpeed;
             }
+
+            
         }
 
         public function kickDirection(d:Number, p:Number):void{
@@ -98,13 +111,25 @@ package{
 
         public function borderCollide():void{
             if(this.x >= FlxG.width - width)
+            {
                 this.x = FlxG.width - width;
-            if(this.x <= 0)
+                this.velocity.x *= -bounciness;
+            }
+            else if(this.x <= 0)
+            {
                 this.x = 0;
-            if(this.y >= FlxG.height - height)
-                this.y = FlxG.height - height;
-            if(this.y <= 0)
-                this.y = 0;
+                this.velocity.x *= -bounciness;
+            }
+            if(this.yPos >= FlxG.height - height)
+            {
+                this.yPos = FlxG.height - height;
+                this.velocity.y *= -bounciness;
+            }
+            else if(this.yPos <= PlayState.groundHeight)
+            {
+                this.yPos = PlayState.groundHeight;
+                this.velocity.y *= -bounciness;
+            }
         }
     }
 }

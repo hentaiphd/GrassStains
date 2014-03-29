@@ -158,8 +158,8 @@ package{
                 this.x = 0;
             if(this.y >= FlxG.height - height)
                 this.y = FlxG.height - height;
-            if(this.y <= 0)
-                this.y = 0;
+            if(this.y <= PlayState.groundHeight)
+                this.y = PlayState.groundHeight;
         }
     }
 }
