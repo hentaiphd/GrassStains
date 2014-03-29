@@ -22,6 +22,8 @@ package
         public var debugText:FlxText;
         public var timeFrame:Number = 0;
         public var timeSec:Number = 0;
+        public var goalLeft:FlxSprite;
+        public var goalRight:FlxSprite;
 
         public static var groundHeight:Number = 80;
 
@@ -48,6 +50,16 @@ package
 
             p2Shadow = new FlxSprite(0,0,ImgShadow);
             add(p2Shadow);
+
+            goalLeft = new FlxSprite(0,300);
+            goalLeft.makeGraphic(100,100,0xffffffff);
+            goalLeft.immovable = true;
+            this.add(goalLeft);
+
+            goalRight = new FlxSprite(500,300);
+            goalRight.makeGraphic(100,100,0xffffffff);
+            goalRight.immovable = true;
+            this.add(goalRight);
 
             playerOne = new Player(200,200,1);
             this.add(playerOne);
@@ -78,15 +90,34 @@ package
             ballShadow.x = ball.x - ballShadow.width/2;
             ballShadow.y = ball.y - ballShadow.height/2;
 
-
-            FlxG.collide(playerOne,ball,kickCallback);
-            FlxG.collide(playerTwo,ball,kickCallback);
-
-            debugText.text = playerOne.facing.toString();
+            FlxG.collide(playerOne,ball,playerOneKick);
+            FlxG.collide(playerTwo,ball,playerTwoKick);
         }
 
-        public function kickCallback(p:Player,b:Ball):void{
-            b.kickDirection(p.facing,5);
+        public function playerOneKick(p:Player,b:Ball):void{
+            b.kickDirection(p.facing,1);
+
+            if(b.runSpeed > 0){
+                if(b.kicking != 1){
+                    FlxG.switchState(new MenuState());
+                }
+            }
+
+            b.kicking = 1;
+            p.power = 0;
+        }
+
+        public function playerTwoKick(p:Player,b:Ball):void{
+            b.kickDirection(p.facing,1);
+
+            if(b.runSpeed > 0){
+                if(b.kicking != 2){
+                    FlxG.switchState(new MenuState());
+                }
+            }
+
+            b.kicking = 2;
+            p.power = 0;
         }
     }
 }

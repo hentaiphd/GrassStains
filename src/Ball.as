@@ -12,7 +12,7 @@ package{
         public var timeFrame:Number = 0;
         public var timeSec:Number = 0;
         public var dir:Number = 0;
-        public var kicking:Boolean = false;
+        public var kicking:Number = 0;
         public var power:Number = 0;
 
         public var yPos:Number;
@@ -33,17 +33,19 @@ package{
             super.update();
             borderCollide();
 
-            /*if(kicking == true){
-                timeFrame++;
-                if(timeFrame%50 == 0){
-                    timeSec++;
-                }
-                if(timeSec == 3){
-                    kicking = false;
-                }
-
-                kickBall();
-            }*/
+            if(power > 0){
+                runSpeed = .01;
+                velocityScale = .001;
+                accelerationScale = .001;
+            } else if(power > 3){
+                runSpeed = .1;
+                velocityScale = .01;
+                accelerationScale = .01;
+            }else if(power > 5){
+                runSpeed = 1;
+                velocityScale = .1;
+                accelerationScale = .1;
+            }
 
             kickBall();
 

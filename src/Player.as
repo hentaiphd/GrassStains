@@ -10,25 +10,45 @@ package{
         public var velocityScale:Number = .05;
         public var accelerationScale:Number = .5;
         public var playerNum:Number;
-        public var kicking:Boolean = false;
+        public var power:Number = 0;
+        public var powerCap:Number = 100;
+        public var debugText:FlxText;
 
         public function Player(x:Number, y:Number, player:Number):void{
             super(x,y);
             playerNum = player;
             makeGraphic(10,10);
+            debugText = new FlxText(x-20,y-30,100,"");
+            FlxG.state.add(debugText);
         }
 
 
         override public function update():void{
             super.update();
             borderCollide();
+            debugText.text = power.toString();
+            debugText.x = this.x-20;
+            debugText.y = this.y-30;
 
             if(playerNum == 1){
                 playerOneMovement();
+
+                if(FlxG.keys.pressed("SHIFT")){
+                    power++;
+                    if(power > powerCap){
+                        power = powerCap;
+                    }
+                }
             }
 
             if(playerNum == 2){
                 playerTwoMovement();
+                if(FlxG.keys.pressed("SPACE")){
+                    power++;
+                    if(power > powerCap){
+                        power = powerCap;
+                    }
+                }
             }
 
         }
