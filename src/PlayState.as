@@ -105,6 +105,7 @@ package
 
         public function score(b:Ball,g:Goal):void{
             g.score++;
+            FlxG.shake(.001,1);
             b.resetBall();
         }
 
@@ -112,7 +113,7 @@ package
             if(b.runSpeed > 0){
                 if(b.kicking == 2){
                     if(b.velocity.x > 5){
-                        FlxG.switchState(new MenuState());
+                        FlxG.switchState(new MenuState(goalLeft.score,goalRight.score,true));
                     }
                 }
             }
@@ -127,7 +128,7 @@ package
             if(b.runSpeed > 0){
                 if(b.kicking == 1){
                     if(b.velocity.x > 5){
-                        FlxG.switchState(new MenuState());
+                        FlxG.switchState(new MenuState(goalLeft.score,goalRight.score,true));
                     }
                 }
             }

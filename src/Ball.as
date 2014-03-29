@@ -6,7 +6,7 @@ package{
         public var _scale:FlxPoint = new FlxPoint(1,1);
         public var _scaleFlipX:Number = 1;
         public var _scaleFlipY:Number = 1;
-        public var maxSpeed:Number = 10;
+        public var maxSpeed:Number = 100;
         public var velocityScale:Number = 0;
         public var accelerationScale:Number = 0;
         public var timeFrame:Number = 0;
@@ -97,7 +97,7 @@ package{
             {
                 fallSpeed += gravity;
 
-            } 
+            }
             else if (fallSpeed > 3)
             {
                 air = 0;
@@ -123,8 +123,8 @@ package{
                     this.dribbleOne = false;
                     this.dribbleTwo = false;
                 } else {
-                    this.x = p.x+ (p.scale.x * -20);
-                    this.yPos = p.y+p.height;
+                    this.x = p.x+ (p.scale.x * -40);
+                    this.yPos = (p.y+p.height)-25;
                 }
             }
 
@@ -136,8 +136,8 @@ package{
                     this.dribbleOne = false;
                     this.dribbleTwo = false;
                 } else {
-                    this.x = p.x+(p.scale.x * -20);
-                    this.yPos = p.y+p.height;
+                    this.x = p.x+(p.scale.x * -10);
+                    this.yPos = (p.y+p.height)-30;
                 }
             }
         }
@@ -145,7 +145,7 @@ package{
         public function kickBall(player:Player, p:Number):void{
             power = p;
 
-            var rand:Number = (Math.floor(Math.random()*power))*5;
+            var rand:Number = power/10;
 
             if(player.facing == LEFT) { //left
                 this.velocity.x = rand*-1;
