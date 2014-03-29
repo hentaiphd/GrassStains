@@ -74,6 +74,8 @@ package
         override public function update():void
         {
             super.update();
+            debugText.text = ball.velocity.x.toString();
+
             timeFrame++;
             if(timeFrame%50 == 0){
                 timeSec++;

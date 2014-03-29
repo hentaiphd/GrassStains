@@ -103,7 +103,7 @@ package{
         public function kickBall(player:Player, p:Number):void{
             power = p;
 
-            var rand:Number = (Math.floor(Math.random()*power))+power/2;
+            var rand:Number = (Math.floor(Math.random()*power))*5;
 
             if(player.facing == LEFT) { //left
                 this.velocity.x = rand*-1;
