@@ -14,12 +14,16 @@ package{
         public var powerCap:Number = 100;
         public var debugText:FlxText;
 
+        public var pos:FlxPoint;
+        public var shakeMod:FlxPoint = new FlxPoint(0,0);
+
         public var state:String = "idle";
 
         [Embed(source="data/sprites/ninaSheet.png")] private var ImgNina:Class;
 
         public function Player(x:Number, y:Number, player:Number):void{
             super(x,y);
+            pos = new FlxPoint(x,y);
             playerNum = player;
             makeGraphic(10,10);
             debugText = new FlxText(x-20,y-30,100,"");
@@ -56,24 +60,43 @@ package{
 
                 if(FlxG.keys.pressed("SHIFT")){
                     power++;
+
+                    var shake:Number = (Math.random() * power/20) - (power/40);
+
+                    shakeMod = new FlxPoint(shake, shake);
+
                     if(power > powerCap){
                         power = powerCap;
                     }
+                }
+                else
+                {
+                    shakeMod = new FlxPoint(0,0);
                 }
             }
 
             if(playerNum == 2){
                 playerTwoMovement();
                 if(FlxG.keys.pressed("SPACE")){
+                    
+                    var shake2:Number = (Math.random() * power/20) - (power/40);
+
+                    shakeMod = new FlxPoint(shake2, shake2);
+
                     power++;
                     if(power > powerCap){
                         power = powerCap;
                     }
                 }
+                else
+                {
+                    shakeMod = new FlxPoint(0,0);
+                }
             }
 
             play(state);
-
+            x = pos.x + shakeMod.x;
+            y = pos.y + shakeMod.y;
         }
 
         public function playerOneMovement():void{
@@ -103,10 +126,9 @@ package{
 
             this.velocity.x += this.acceleration.x;
             this.velocity.y += this.acceleration.y;
-            //pos.x += velo.x;
-            //pos.y += velo.y;
-            this.x += velocity.x;
-            this.y += velocity.y;
+
+            this.pos.x += velocity.x;
+            this.pos.y += velocity.y;
 
             if(Math.abs(this.velocity.x) >= maxSpeed){
                 this.velocity.x = (this.velocity.x/Math.abs(this.velocity.x))*maxSpeed;
@@ -114,9 +136,6 @@ package{
             if(Math.abs(this.velocity.y) >= maxSpeed){
                 this.velocity.y = (this.velocity.y/Math.abs(this.velocity.y))*maxSpeed;
             }
-
-            //this.x = pos.x;
-            //this.y = pos.y;
 
             if(FlxG.keys.LEFT) {
                 this.facing = LEFT;
@@ -172,8 +191,7 @@ package{
 
             this.velocity.x += this.acceleration.x;
             this.velocity.y += this.acceleration.y;
-            //pos.x += velo.x;
-            //pos.y += velo.y;
+
             this.x += velocity.x;
             this.y += velocity.y;
 
@@ -184,8 +202,6 @@ package{
                 this.velocity.y = (this.velocity.y/Math.abs(this.velocity.y))*maxSpeed;
             }
 
-            //this.x = pos.x;
-            //this.y = pos.y;
 
             if(FlxG.keys.A) {
                 this.facing = LEFT;
@@ -214,14 +230,14 @@ package{
         }
 
         public function borderCollide():void{
-            if(this.x >= FlxG.width - width)
-                this.x = FlxG.width - width;
-            if(this.x <= 0)
-                this.x = 0;
-            if(this.y >= FlxG.height - height)
-                this.y = FlxG.height - height;
-            if(this.y <= PlayState.groundHeight)
-                this.y = PlayState.groundHeight;
+            if(this.pos.x >= FlxG.width - width)
+                this.pos.x = FlxG.width - width;
+            if(this.pos.x <= 0)
+                this.pos.x = 0;
+            if(this.pos.y >= FlxG.height - height)
+                this.pos.y = FlxG.height - height;
+            if(this.pos.y <= PlayState.groundHeight)
+                this.pos.y = PlayState.groundHeight;
         }
     }
 }

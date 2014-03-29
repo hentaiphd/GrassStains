@@ -7,7 +7,9 @@ package{
 
         public function Goal(x:Number, y:Number, p:Number):void{
             super(x,y);
-            makeGraphic(100,100,0xffffffff);
+            width = 10;
+            height = 140;
+            visible = false;
             player = p;
         }
 

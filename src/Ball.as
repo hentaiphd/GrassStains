@@ -22,6 +22,8 @@ package{
         public var fallSpeed:Number = 0;
         public var gravity:Number = .9;
 
+        public var maxKickStrength = 15;
+
         public var JUST_KICKED:Boolean = false;
         public var kickTimer:Number = 0;
         public var maxKickTimer:Number = 1;
@@ -123,8 +125,8 @@ package{
                     this.dribbleOne = false;
                     this.dribbleTwo = false;
                 } else {
-                    this.x = p.x+ (p.scale.x * -40);
-                    this.yPos = (p.y+p.height)-25;
+                    this.x = p.pos.x+ (p.scale.x * -40);
+                    this.yPos = (p.pos.y+p.height)-25;
                 }
             }
 
@@ -136,8 +138,8 @@ package{
                     this.dribbleOne = false;
                     this.dribbleTwo = false;
                 } else {
-                    this.x = p.x+(p.scale.x * -10);
-                    this.yPos = (p.y+p.height)-30;
+                    this.x = p.pos.x+(p.scale.x * -10);
+                    this.yPos = (p.pos.y+p.height)-30;
                 }
             }
         }
@@ -145,7 +147,7 @@ package{
         public function kickBall(player:Player, p:Number):void{
             power = p;
 
-            var rand:Number = power/10;
+            var rand:Number = maxKickStrength * (power/100);
 
             if(player.facing == LEFT) { //left
                 this.velocity.x = rand*-1;
