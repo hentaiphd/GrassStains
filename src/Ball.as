@@ -22,7 +22,7 @@ package{
         public var fallSpeed:Number = 0;
         public var gravity:Number = .9;
 
-        public var maxKickStrength = 15;
+        public var maxKickStrength:Number = 15;
 
         public var JUST_KICKED:Boolean = false;
         public var kickTimer:Number = 0;
