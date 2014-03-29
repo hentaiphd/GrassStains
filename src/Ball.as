@@ -18,7 +18,13 @@ package{
         public var dribbleTwo:Boolean = false;
 
         public var yPos:Number;
-        public var air:Number = 0;
+        public var air:Number = 50;
+        public var fallSpeed:Number = 0;
+        public var gravity:Number = .9;
+
+        public var JUST_KICKED:Boolean = false;
+        public var kickTimer:Number = 0;
+        public var maxKickTimer:Number = 1;
 
         // out of 1. 1 means the ball loses no velocity when bouncing.
         public var bounciness:Number = .75;
@@ -37,7 +43,15 @@ package{
 
             ballMovement();
 
-            this.y = this.yPos - this.air;
+            if (kickTimer > 0)
+            {
+                kickTimer -= FlxG.elapsed;
+            }
+            else
+            {
+                kickTimer = 0;
+                JUST_KICKED = false;
+            }
         }
 
         public function resetBall():void{
@@ -78,6 +92,26 @@ package{
             if(Math.abs(this.velocity.y) >= maxSpeed){
                 this.velocity.y = (this.velocity.y/Math.abs(this.velocity.y))*maxSpeed;
             }
+
+            if (air > 0)
+            {
+                fallSpeed += gravity;
+
+            } 
+            else if (fallSpeed > 3)
+            {
+                air = 0;
+                fallSpeed *= -bounciness;
+            }
+            else
+            {
+                air = 0;
+                fallSpeed = 0;
+            }
+
+            air -= fallSpeed;
+
+            this.y = this.yPos - this.air;
         }
 
         public function dribble(p:Player,power:Number):void{
@@ -89,8 +123,8 @@ package{
                     this.dribbleOne = false;
                     this.dribbleTwo = false;
                 } else {
-                    this.x = p.x+20;
-                    this.yPos = p.y+20;
+                    this.x = p.x+ (p.scale.x * -20);
+                    this.yPos = p.y+p.height;
                 }
             }
 
@@ -102,8 +136,8 @@ package{
                     this.dribbleOne = false;
                     this.dribbleTwo = false;
                 } else {
-                    this.x = p.x+20;
-                    this.yPos = p.y+20;
+                    this.x = p.x+(p.scale.x * -20);
+                    this.yPos = p.y+p.height;
                 }
             }
         }
@@ -126,6 +160,12 @@ package{
             } else if(player.facing == DOWN){ //down
                 this.velocity.y = rand;
             }
+
+            this.air = 1;
+            this.fallSpeed = -(p/5);
+
+            kickTimer = maxKickTimer;
+            JUST_KICKED = true;
         }
 
         public function borderCollide():void{

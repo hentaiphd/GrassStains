@@ -33,6 +33,7 @@ package
          [Embed(source="data/sprites/shadow.png")] private var ImgShadow:Class;
 
 
+
         override public function create():void
         {
             bg = new FlxSprite(0,0,ImgBG);
@@ -80,18 +81,19 @@ package
             //realign shadows w/ locations of objects
 
             p1Shadow.x = playerOne.x - p1Shadow.width/2;
-            p1Shadow.y = playerOne.y; - p1Shadow.height/2;
+            p1Shadow.y = playerOne.y; - p1Shadow.height/2 + playerOne.height;
 
             p2Shadow.x = playerTwo.x - p2Shadow.width/2;
             p2Shadow.y = playerTwo.y - p2Shadow.height/2;
 
             ballShadow.x = ball.x - ballShadow.width/2;
-            ballShadow.y = ball.y - ballShadow.height/2;
+            ballShadow.y = ball.yPos + ball.height * .75;
 
-            FlxG.collide(playerOne,ball,playerOneGrab);
-            FlxG.collide(playerTwo,ball,playerTwoGrab);
-            FlxG.collide(ball,goalRight,score);
-            FlxG.collide(ball,goalLeft,score);
+
+            FlxG.overlap(ball,goalRight,score);
+            FlxG.overlap(ball,goalLeft,score);
+            FlxG.overlap(playerOne,ball,playerOneGrab);
+            FlxG.overlap(playerTwo,ball,playerTwoGrab);
 
             if(ball.dribbleOne){
                 ball.dribble(playerOne,playerOne.power);
@@ -115,7 +117,10 @@ package
                 }
             }
 
-            b.dribbleOne = true;
+            if (!b.JUST_KICKED || b.kicking == 2)
+            {
+                 b.dribbleOne = true;
+            }
         }
 
         public function playerTwoGrab(p:Player,b:Ball):void{
@@ -127,7 +132,10 @@ package
                 }
             }
 
-            b.dribbleTwo = true;
+            if (!b.JUST_KICKED || b.kicking == 2)
+            {
+                 b.dribbleTwo = true;
+            }
         }
     }
 }

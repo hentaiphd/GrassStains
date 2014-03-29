@@ -14,12 +14,33 @@ package{
         public var powerCap:Number = 100;
         public var debugText:FlxText;
 
+        public var state:String = "idle";
+
+        [Embed(source="data/sprites/ninaSheet.png")] private var ImgNina:Class;
+
         public function Player(x:Number, y:Number, player:Number):void{
             super(x,y);
             playerNum = player;
             makeGraphic(10,10);
             debugText = new FlxText(x-20,y-30,100,"");
             FlxG.state.add(debugText);
+
+            switch (playerNum)
+            {
+                case 1:
+                this.loadGraphic(ImgNina,true,false,76,136);
+                break;
+                case 2:
+
+                break;
+            }
+
+            offset.x = width/4;
+            width = width/2;
+
+
+            this.addAnimation("idle",[0]);
+            this.addAnimation("run",[1,2],10)
         }
 
 
@@ -50,6 +71,8 @@ package{
                     }
                 }
             }
+
+            play(state);
 
         }
 
@@ -100,17 +123,25 @@ package{
                 this.acceleration.x = runSpeed*-1;
                 this.scale.x = _scaleFlipX;
                 this.scale.y = _scaleFlipY;
+                state = "run"
             } else if(FlxG.keys.RIGHT){
                 this.facing = RIGHT;
                 this.acceleration.x = runSpeed;
                 this.scale.x = -_scaleFlipX;
                 this.scale.y = _scaleFlipY;
+                state = "run"
             } else if(FlxG.keys.UP){
                 this.facing = UP;
                 this.acceleration.y = runSpeed*-1;
+                state = "run"
             } else if(FlxG.keys.DOWN){
                 this.facing = DOWN;
                 this.acceleration.y = runSpeed;
+                state = "run"
+            }
+            else
+            {
+                state = "idle"
             }
         }
 
@@ -161,17 +192,24 @@ package{
                 this.acceleration.x = runSpeed*-1;
                 this.scale.x = _scaleFlipX;
                 this.scale.y = _scaleFlipY;
+                state = "run"
             } else if(FlxG.keys.D){
                 this.facing = RIGHT;
                 this.acceleration.x = runSpeed;
                 this.scale.x = -_scaleFlipX;
                 this.scale.y = _scaleFlipY;
+                state = "run"
             } else if(FlxG.keys.W){
                 this.facing = UP;
                 this.acceleration.y = runSpeed*-1;
+                state = "run"
             } else if(FlxG.keys.S){
                 this.facing = DOWN;
                 this.acceleration.y = runSpeed;
+                state = "run"
+            } else
+            {
+                state = "idle"
             }
         }
 
