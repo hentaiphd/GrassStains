@@ -13,6 +13,7 @@ package{
         public var power:Number = 0;
         public var powerCap:Number = 100;
         public var debugText:FlxText;
+        public var fell:Boolean = false;
 
         public var pos:FlxPoint;
         public var shakeMod:FlxPoint = new FlxPoint(0,0);
@@ -51,46 +52,53 @@ package{
         override public function update():void{
             super.update();
             borderCollide();
-            debugText.text = power.toString();
-            debugText.x = this.x-20;
-            debugText.y = this.y-30;
 
-            if(playerNum == 1){
-                playerOneMovement();
-
-                if(FlxG.keys.pressed("SHIFT")){
-                    power++;
-
-                    var shake:Number = (Math.random() * power/20) - (power/40);
-
-                    shakeMod = new FlxPoint(shake, shake);
-
-                    if(power > powerCap){
-                        power = powerCap;
-                    }
-                }
-                else
-                {
-                    shakeMod = new FlxPoint(0,0);
-                }
+            if(fell){
+                debugText.text = "I fell!";
+            } else {
+                debugText.text = power.toString();
+                debugText.x = this.x-20;
+                debugText.y = this.y-30;
             }
 
-            if(playerNum == 2){
-                playerTwoMovement();
-                if(FlxG.keys.pressed("SPACE")){
+            if(!fell){
+                if(playerNum == 1){
+                    playerOneMovement();
 
-                    var shake2:Number = (Math.random() * power/20) - (power/40);
+                    if(FlxG.keys.pressed("SHIFT")){
+                        power++;
 
-                    shakeMod = new FlxPoint(shake2, shake2);
+                        var shake:Number = (Math.random() * power/20) - (power/40);
 
-                    power++;
-                    if(power > powerCap){
-                        power = powerCap;
+                        shakeMod = new FlxPoint(shake, shake);
+
+                        if(power > powerCap){
+                            power = powerCap;
+                        }
+                    }
+                    else
+                    {
+                        shakeMod = new FlxPoint(0,0);
                     }
                 }
-                else
-                {
-                    shakeMod = new FlxPoint(0,0);
+
+                if(playerNum == 2){
+                    playerTwoMovement();
+                    if(FlxG.keys.pressed("SPACE")){
+
+                        var shake2:Number = (Math.random() * power/20) - (power/40);
+
+                        shakeMod = new FlxPoint(shake2, shake2);
+
+                        power++;
+                        if(power > powerCap){
+                            power = powerCap;
+                        }
+                    }
+                    else
+                    {
+                        shakeMod = new FlxPoint(0,0);
+                    }
                 }
             }
 

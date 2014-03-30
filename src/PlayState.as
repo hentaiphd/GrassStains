@@ -113,6 +113,10 @@ package
                 timeSec++;
             }
 
+            if(timeSec == 180){
+                FlxG.switchState(new MenuState(goalLeft.score,goalRight.score,true));
+            }
+
             //realign shadows w/ locations of objects
 
             p1Shadow.x = playerOne.x - p1Shadow.width/2;
@@ -129,6 +133,7 @@ package
             FlxG.overlap(ball,goalLeft,score);
             FlxG.overlap(playerOne,ball,playerOneGrab);
             FlxG.overlap(playerTwo,ball,playerTwoGrab);
+            FlxG.overlap(playerTwo,playerOne,helpStand);
 
             if(ball.dribbleOne){
                 ball.dribble(playerOne,playerOne.power);
@@ -136,6 +141,11 @@ package
             if(ball.dribbleTwo){
                 ball.dribble(playerTwo,playerTwo.power);
             }
+        }
+
+        public function helpStand(p1:Player,p2:Player):void{
+            p1.fell = false;
+            p2.fell = false;
         }
 
         public function score(b:Ball,g:Goal):void{
@@ -151,8 +161,8 @@ package
         public function playerOneGrab(p:Player,b:Ball):void{
             if(b.runSpeed > 0){
                 if(b.kicking == 2){
-                    if(b.velocity.x > 5){
-                        FlxG.switchState(new MenuState(goalLeft.score,goalRight.score,true));
+                    if(b.velocity.x > 3){
+                        p.fell = true;
                     }
                 }
             }
@@ -170,8 +180,8 @@ package
         public function playerTwoGrab(p:Player,b:Ball):void{
             if(b.runSpeed > 0){
                 if(b.kicking == 1){
-                    if(b.velocity.x > 5){
-                        FlxG.switchState(new MenuState(goalLeft.score,goalRight.score,true));
+                    if(b.velocity.x > 3){
+                        p.fell = true;
                     }
                 }
             }
@@ -179,9 +189,9 @@ package
             if(!b.dribbleOne){
                 if(!b.dribbleTwo){
                     if (!b.JUST_KICKED || b.kicking == 2)
-                        {
-                             b.dribbleTwo = true;
-                        }
+                    {
+                         b.dribbleTwo = true;
+                    }
                 }
             }
         }
