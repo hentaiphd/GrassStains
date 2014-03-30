@@ -20,6 +20,7 @@ package{
         public var state:String = "idle";
 
         [Embed(source="data/sprites/ninaSheet.png")] private var ImgNina:Class;
+        [Embed(source="data/sprites/DiegoSheet.png")] private var ImgDiego:Class;
 
         public function Player(x:Number, y:Number, player:Number):void{
             super(x,y);
@@ -35,7 +36,7 @@ package{
                 this.loadGraphic(ImgNina,true,false,76,136);
                 break;
                 case 2:
-
+                this.loadGraphic(ImgDiego,true,false,120,136);
                 break;
             }
 
@@ -45,6 +46,10 @@ package{
 
             this.addAnimation("idle",[0]);
             this.addAnimation("run",[1,2],10)
+            this.addAnimation("charge",[3]);
+            this.addAnimation("kick",[4]);
+            this.addAnimation("falling",[5]);
+            this.addAnimation("fell",[6]);
         }
 
 
@@ -55,19 +60,13 @@ package{
             debugText.x = this.x-20;
             debugText.y = this.y-30;
 
-            if(playerNum == 1){
+            if(playerNum == 1)
+            {
                 playerOneMovement();
 
-                if(FlxG.keys.pressed("SHIFT")){
-                    power++;
-
-                    var shake:Number = (Math.random() * power/20) - (power/40);
-
-                    shakeMod = new FlxPoint(shake, shake);
-
-                    if(power > powerCap){
-                        power = powerCap;
-                    }
+                if(FlxG.keys.pressed("SHIFT"))
+                {
+                    charge();   
                 }
                 else
                 {
@@ -75,18 +74,12 @@ package{
                 }
             }
 
-            if(playerNum == 2){
+            if(playerNum == 2)
+            {
                 playerTwoMovement();
-                if(FlxG.keys.pressed("SPACE")){
-                    
-                    var shake2:Number = (Math.random() * power/20) - (power/40);
-
-                    shakeMod = new FlxPoint(shake2, shake2);
-
-                    power++;
-                    if(power > powerCap){
-                        power = powerCap;
-                    }
+                if(FlxG.keys.pressed("SPACE"))
+                {
+                    charge();
                 }
                 else
                 {
@@ -97,6 +90,21 @@ package{
             play(state);
             x = pos.x + shakeMod.x;
             y = pos.y + shakeMod.y;
+        }
+
+        public function charge():void
+        {
+            state = "charge";
+            power++;
+
+            var shake:Number = (Math.random() * power/20) - (power/40);
+
+            shakeMod = new FlxPoint(shake, shake);
+
+            if(power > powerCap)
+            {
+             power = powerCap;
+            }
         }
 
         public function playerOneMovement():void{
