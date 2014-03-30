@@ -55,7 +55,7 @@ package{
             debugText.x = this.x-20;
             debugText.y = this.y-30;
 
-            if(playerNum == 2){
+            if(playerNum == 1){
                 playerOneMovement();
 
                 if(FlxG.keys.pressed("SHIFT")){
@@ -75,7 +75,7 @@ package{
                 }
             }
 
-            if(playerNum == 1){
+            if(playerNum == 2){
                 playerTwoMovement();
                 if(FlxG.keys.pressed("SPACE")){
 

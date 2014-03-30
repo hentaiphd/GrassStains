@@ -72,10 +72,10 @@ package
             p2Shadow = new FlxSprite(0,0,ImgShadow);
             add(p2Shadow);
 
-            goalLeft = new Goal(0,215,2);
+            goalLeft = new Goal(0,215,1);
             this.add(goalLeft);
 
-            goalRight = new Goal(FlxG.width,215,1);
+            goalRight = new Goal(FlxG.width,215,2);
             goalRight.x -= goalRight.width;
             this.add(goalRight);
 
@@ -105,8 +105,8 @@ package
             super.update();
             debugText.text = ball.velocity.x.toString();
 
-            net1Text.text = "P2 Score: " + goalLeft.score.toString();
-            net2Text.text = "P1 Score: " + goalRight.score.toString();
+            net2Text.text = "P1 Score: " + goalLeft.score.toString();
+            net1Text.text = "P2 Score: " + goalRight.score.toString();
 
             timeFrame++;
             if(timeFrame%50 == 0){
