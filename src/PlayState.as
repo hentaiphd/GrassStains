@@ -139,9 +139,13 @@ package
         }
 
         public function score(b:Ball,g:Goal):void{
-            g.score++;
-            FlxG.shake(.001,1);
-            b.resetBall();
+            if(!b.dribbleOne){
+                if(!b.dribbleTwo){
+                    g.score++;
+                    FlxG.shake(.001,1);
+                    b.resetBall();
+                }
+            }
         }
 
         public function playerOneGrab(p:Player,b:Ball):void{
@@ -153,9 +157,13 @@ package
                 }
             }
 
-            if (!b.JUST_KICKED || b.kicking == 2)
-            {
-                 b.dribbleOne = true;
+            if(!b.dribbleOne){
+                if(!b.dribbleTwo){
+                    if (!b.JUST_KICKED || b.kicking == 2)
+                        {
+                             b.dribbleOne = true;
+                        }
+                }
             }
         }
 
@@ -168,9 +176,13 @@ package
                 }
             }
 
-            if (!b.JUST_KICKED || b.kicking == 2)
-            {
-                 b.dribbleTwo = true;
+            if(!b.dribbleOne){
+                if(!b.dribbleTwo){
+                    if (!b.JUST_KICKED || b.kicking == 2)
+                        {
+                             b.dribbleTwo = true;
+                        }
+                }
             }
         }
     }

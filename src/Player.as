@@ -35,7 +35,7 @@ package{
                 this.loadGraphic(ImgNina,true,false,76,136);
                 break;
                 case 2:
-
+                this.loadGraphic(ImgNina,true,false,76,136);
                 break;
             }
 
