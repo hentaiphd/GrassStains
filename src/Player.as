@@ -143,6 +143,18 @@ package{
             play(state);
             this.x = pos.x + shakeMod.x;
             this.y = pos.y + shakeMod.y - air;
+
+            if (state == "idle")
+            {
+            if (velocity.x < .5 && velocity.x > -.5)
+            {
+                velocity.x = 0;
+            }
+            if (velocity.y < .5 && velocity.y > -.5)
+            {
+                velocity.y = 0;
+            }
+            }
         }
 
         public function charge():void

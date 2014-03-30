@@ -144,8 +144,15 @@ package
         }
 
         public function helpStand(p1:Player,p2:Player):void{
-            p1.fell = false;
-            p2.fell = false;
+            if (p1.state == "fell")
+            {
+                p1.state = "idle";
+            }
+
+            if (p2.state == "fell")
+            {
+                p2.state = "idle";
+            }
         }
 
         public function score(b:Ball,g:Goal):void{
