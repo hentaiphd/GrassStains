@@ -28,6 +28,8 @@ package
         public var net2Front:FlxSprite;
         public var goalLeft:Goal;
         public var goalRight:Goal;
+        public var net1Text:FlxText;
+        public var net2Text:FlxText;
 
         public static var groundHeight:Number = 80;
 
@@ -61,7 +63,6 @@ package
             net2Front.x = FlxG.width - net2Front.width;
             add(net2Back);
 
-
             ballShadow = new FlxSprite(0,0,ImgShadow);
             add(ballShadow);
 
@@ -71,17 +72,17 @@ package
             p2Shadow = new FlxSprite(0,0,ImgShadow);
             add(p2Shadow);
 
-            goalLeft = new Goal(0,215,2);
+            goalLeft = new Goal(0,215,1);
             this.add(goalLeft);
 
-            goalRight = new Goal(FlxG.width,215,1);
+            goalRight = new Goal(FlxG.width,215,2);
             goalRight.x -= goalRight.width;
             this.add(goalRight);
 
             playerOne = new Player(200,200,1);
             this.add(playerOne);
 
-            playerTwo = new Player(100,100,2);
+            playerTwo = new Player(400,200,2);
             this.add(playerTwo);
 
             ball = new Ball(350,350);
@@ -89,6 +90,14 @@ package
 
             add(netFront);
             add(net2Front);
+
+            net1Text = new FlxText(FlxG.width-100,FlxG.height-30,500,"");
+            net1Text.size = 14;
+            add(net1Text);
+
+            net2Text = new FlxText(20,FlxG.height-30,500,"");
+            net2Text.size = 14;
+            add(net2Text);
         }
 
         override public function update():void
@@ -96,9 +105,16 @@ package
             super.update();
             debugText.text = ball.velocity.x.toString();
 
+            net2Text.text = "P1 Score: " + goalLeft.score.toString();
+            net1Text.text = "P2 Score: " + goalRight.score.toString();
+
             timeFrame++;
             if(timeFrame%50 == 0){
                 timeSec++;
+            }
+
+            if(timeSec == 180){
+                FlxG.switchState(new MenuState(goalLeft.score,goalRight.score,true));
             }
 
             //realign shadows w/ locations of objects
@@ -117,6 +133,7 @@ package
             FlxG.overlap(ball,goalLeft,score);
             FlxG.overlap(playerOne,ball,playerOneGrab);
             FlxG.overlap(playerTwo,ball,playerTwoGrab);
+            FlxG.overlap(playerTwo,playerOne,helpStand);
 
             if(ball.dribbleOne){
                 ball.dribble(playerOne,playerOne.power);
@@ -126,39 +143,56 @@ package
             }
         }
 
+        public function helpStand(p1:Player,p2:Player):void{
+            p1.fell = false;
+            p2.fell = false;
+        }
+
         public function score(b:Ball,g:Goal):void{
-            g.score++;
-            FlxG.shake(.001,1);
-            b.resetBall();
+            if(!b.dribbleOne){
+                if(!b.dribbleTwo){
+                    g.score++;
+                    FlxG.shake(.001,1);
+                    b.resetBall();
+                }
+            }
         }
 
         public function playerOneGrab(p:Player,b:Ball):void{
             if(b.runSpeed > 0){
                 if(b.kicking == 2){
-                    if(b.velocity.x > 5){
-                        FlxG.switchState(new MenuState(goalLeft.score,goalRight.score,true));
+                    if(b.velocity.x > 3){
+                        p.fall(b.velocity);
                     }
                 }
             }
 
-            if (!b.JUST_KICKED || b.kicking == 2)
-            {
-                 b.dribbleOne = true;
+            if(!b.dribbleOne){
+                if(!b.dribbleTwo){
+                    if (!b.JUST_KICKED || b.kicking == 2)
+                        {
+                             b.dribbleOne = true;
+                        }
+                }
             }
         }
 
         public function playerTwoGrab(p:Player,b:Ball):void{
             if(b.runSpeed > 0){
                 if(b.kicking == 1){
-                    if(b.velocity.x > 5){
-                        FlxG.switchState(new MenuState(goalLeft.score,goalRight.score,true));
+                    if(b.velocity.x > 3){
+                        p.fall(b.velocity);
                     }
                 }
             }
 
-            if (!b.JUST_KICKED || b.kicking == 2)
-            {
-                 b.dribbleTwo = true;
+            if(!b.dribbleOne){
+                if(!b.dribbleTwo){
+                    if (!b.JUST_KICKED || b.kicking == 2)
+                    {
+                         b.dribbleTwo = true;
+                    }
+                }
             }
         }
     }

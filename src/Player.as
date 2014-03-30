@@ -13,9 +13,17 @@ package{
         public var power:Number = 0;
         public var powerCap:Number = 100;
         public var debugText:FlxText;
+        public var fell:Boolean = false;
+        public var fallSpeed:Number = 0;
+        public var gravity:Number = .9;
+
+        public var air:Number = 0;
 
         public var pos:FlxPoint;
         public var shakeMod:FlxPoint = new FlxPoint(0,0);
+
+        public var kickTimer:Number = 0;
+        public var maxKickTimer:Number = .25;
 
         public var state:String = "idle";
 
@@ -36,7 +44,7 @@ package{
                 this.loadGraphic(ImgNina,true,false,76,136);
                 break;
                 case 2:
-                this.loadGraphic(ImgDiego,true,false,120,136);
+                this.loadGraphic(ImgDiego,true,false,120,144);
                 break;
             }
 
@@ -56,9 +64,32 @@ package{
         override public function update():void{
             super.update();
             borderCollide();
-            debugText.text = power.toString();
-            debugText.x = this.x-20;
-            debugText.y = this.y-30;
+
+            if (state == "falling")
+            {
+                if (air > 0)
+                {
+                    fallSpeed += gravity;
+
+                }
+                else
+                {
+                    air = 0;
+                    fallSpeed = 0;
+                    state = "fell"
+                }
+
+                air -= fallSpeed;
+
+            }
+
+            if(fell){
+                debugText.text = "I fell!";
+            } else {
+                debugText.text = power.toString();
+                debugText.x = this.x-20;
+                debugText.y = this.y-30;
+            }
 
             if(playerNum == 1)
             {
@@ -71,7 +102,12 @@ package{
                 else
                 {
                     shakeMod = new FlxPoint(0,0);
+                    if (state == "charge")
+                    {
+                        kick();
+                    }
                 }
+
             }
 
             if(playerNum == 2)
@@ -84,12 +120,29 @@ package{
                 else
                 {
                     shakeMod = new FlxPoint(0,0);
+                    if (state == "charge")
+                    {
+                        kick();
+                    }
+                }
+            }
+
+            if (state == "kick")
+            {
+                if (kickTimer > 0)
+                {
+                    kickTimer -= FlxG.elapsed;
+                }
+                else
+                {
+                    state = "idle"
+                    kickTimer = 0;
                 }
             }
 
             play(state);
-            x = pos.x + shakeMod.x;
-            y = pos.y + shakeMod.y;
+            this.x = pos.x + shakeMod.x;
+            this.y = pos.y + shakeMod.y - air;
         }
 
         public function charge():void
@@ -105,6 +158,21 @@ package{
             {
              power = powerCap;
             }
+        }
+
+        public function kick():void
+        {
+            state = "kick";
+            kickTimer = maxKickTimer;
+        }
+
+        public function fall(_direction:FlxPoint):void
+        {
+            state = "falling";
+            air = 1;
+            fallSpeed = -10;
+            velocity = _direction;
+
         }
 
         public function playerOneMovement():void{
@@ -145,6 +213,9 @@ package{
                 this.velocity.y = (this.velocity.y/Math.abs(this.velocity.y))*maxSpeed;
             }
 
+            if (state == "idle" || state == "run")
+            {
+
             if(FlxG.keys.LEFT) {
                 this.facing = LEFT;
                 this.acceleration.x = runSpeed*-1;
@@ -170,6 +241,8 @@ package{
             {
                 state = "idle"
             }
+        }
+
         }
 
         public function playerTwoMovement():void{
@@ -200,8 +273,8 @@ package{
             this.velocity.x += this.acceleration.x;
             this.velocity.y += this.acceleration.y;
 
-            this.x += velocity.x;
-            this.y += velocity.y;
+            this.pos.x += velocity.x;
+            this.pos.y += velocity.y;
 
             if(Math.abs(this.velocity.x) >= maxSpeed){
                 this.velocity.x = (this.velocity.x/Math.abs(this.velocity.x))*maxSpeed;
@@ -210,30 +283,34 @@ package{
                 this.velocity.y = (this.velocity.y/Math.abs(this.velocity.y))*maxSpeed;
             }
 
-
-            if(FlxG.keys.A) {
-                this.facing = LEFT;
-                this.acceleration.x = runSpeed*-1;
-                this.scale.x = _scaleFlipX;
-                this.scale.y = _scaleFlipY;
-                state = "run"
-            } else if(FlxG.keys.D){
-                this.facing = RIGHT;
-                this.acceleration.x = runSpeed;
-                this.scale.x = -_scaleFlipX;
-                this.scale.y = _scaleFlipY;
-                state = "run"
-            } else if(FlxG.keys.W){
-                this.facing = UP;
-                this.acceleration.y = runSpeed*-1;
-                state = "run"
-            } else if(FlxG.keys.S){
-                this.facing = DOWN;
-                this.acceleration.y = runSpeed;
-                state = "run"
-            } else
+            if (state == "idle" || state == "run")
             {
-                state = "idle"
+                if(FlxG.keys.A) 
+                {
+                    this.facing = LEFT;
+                    this.acceleration.x = runSpeed*-1;
+                    this.scale.x = _scaleFlipX;
+                    this.scale.y = _scaleFlipY;
+                    state = "run"
+                } else if(FlxG.keys.D){
+                    this.facing = RIGHT;
+                    this.acceleration.x = runSpeed;
+                    this.scale.x = -_scaleFlipX;
+                    this.scale.y = _scaleFlipY;
+                    state = "run"
+                } else if(FlxG.keys.W){
+                    this.facing = UP;
+                    this.acceleration.y = runSpeed*-1;
+                    state = "run"
+                } else if(FlxG.keys.S){
+                    this.facing = DOWN;
+                    this.acceleration.y = runSpeed;
+                    state = "run"
+                }
+                else
+                {
+                    state = "idle"
+                }
             }
         }
 
