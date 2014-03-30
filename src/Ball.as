@@ -124,6 +124,7 @@ package{
                     p.power = 0;
                     this.dribbleOne = false;
                     this.dribbleTwo = false;
+                    FlxG.shake(.003,1);
                 } else {
                     this.x = p.pos.x+ (p.scale.x * -40);
                     this.yPos = (p.pos.y+p.height)-25;
@@ -137,6 +138,7 @@ package{
                     p.power = 0;
                     this.dribbleOne = false;
                     this.dribbleTwo = false;
+                    FlxG.shake(.003,1);
                 } else {
                     this.x = p.pos.x+(p.scale.x * -10);
                     this.yPos = (p.pos.y+p.height)-30;

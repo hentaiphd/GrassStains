@@ -28,6 +28,8 @@ package
         public var net2Front:FlxSprite;
         public var goalLeft:Goal;
         public var goalRight:Goal;
+        public var net1Text:FlxText;
+        public var net2Text:FlxText;
 
         public static var groundHeight:Number = 80;
 
@@ -61,7 +63,6 @@ package
             net2Front.x = FlxG.width - net2Front.width;
             add(net2Back);
 
-
             ballShadow = new FlxSprite(0,0,ImgShadow);
             add(ballShadow);
 
@@ -81,7 +82,7 @@ package
             playerOne = new Player(200,200,1);
             this.add(playerOne);
 
-            playerTwo = new Player(100,100,2);
+            playerTwo = new Player(400,200,2);
             this.add(playerTwo);
 
             ball = new Ball(350,350);
@@ -89,12 +90,23 @@ package
 
             add(netFront);
             add(net2Front);
+
+            net1Text = new FlxText(FlxG.width-100,FlxG.height-30,500,"");
+            net1Text.size = 14;
+            add(net1Text);
+
+            net2Text = new FlxText(20,FlxG.height-30,500,"");
+            net2Text.size = 14;
+            add(net2Text);
         }
 
         override public function update():void
         {
             super.update();
             debugText.text = ball.velocity.x.toString();
+
+            net1Text.text = "P2 Score: " + goalLeft.score.toString();
+            net2Text.text = "P1 Score: " + goalRight.score.toString();
 
             timeFrame++;
             if(timeFrame%50 == 0){

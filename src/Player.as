@@ -55,7 +55,7 @@ package{
             debugText.x = this.x-20;
             debugText.y = this.y-30;
 
-            if(playerNum == 1){
+            if(playerNum == 2){
                 playerOneMovement();
 
                 if(FlxG.keys.pressed("SHIFT")){
@@ -75,10 +75,10 @@ package{
                 }
             }
 
-            if(playerNum == 2){
+            if(playerNum == 1){
                 playerTwoMovement();
                 if(FlxG.keys.pressed("SPACE")){
-                    
+
                     var shake2:Number = (Math.random() * power/20) - (power/40);
 
                     shakeMod = new FlxPoint(shake2, shake2);
@@ -192,8 +192,8 @@ package{
             this.velocity.x += this.acceleration.x;
             this.velocity.y += this.acceleration.y;
 
-            this.x += velocity.x;
-            this.y += velocity.y;
+            this.pos.x += velocity.x;
+            this.pos.y += velocity.y;
 
             if(Math.abs(this.velocity.x) >= maxSpeed){
                 this.velocity.x = (this.velocity.x/Math.abs(this.velocity.x))*maxSpeed;
@@ -201,7 +201,6 @@ package{
             if(Math.abs(this.velocity.y) >= maxSpeed){
                 this.velocity.y = (this.velocity.y/Math.abs(this.velocity.y))*maxSpeed;
             }
-
 
             if(FlxG.keys.A) {
                 this.facing = LEFT;
@@ -223,7 +222,8 @@ package{
                 this.facing = DOWN;
                 this.acceleration.y = runSpeed;
                 state = "run"
-            } else
+            }
+            else
             {
                 state = "idle"
             }
