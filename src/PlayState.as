@@ -20,16 +20,21 @@ package
         public var p1Shadow:FlxSprite;
         public var p2Shadow:FlxSprite;
         public var debugText:FlxText;
+
+        public var gameDurationSeconds:Number = 180;
         public var timeFrame:Number = 0;
         public var timeSec:Number = 0;
+
         public var netBack:FlxSprite;
         public var netFront:FlxSprite;
         public var net2Back:FlxSprite;
         public var net2Front:FlxSprite;
+        
         public var dinnerBubble:FlxSprite;
-
-        public var dinnerDisplay:Number = 0;
-        public var maxDinnerDisplay:Number = 2;
+        public var maxDinnerDisplay:Number = 3;
+        public var dinnerDisplay:Number = maxDinnerDisplay;
+        private var callingDinner:Boolean = false;
+        private var fadingDisplay:Boolean = false;
 
         public var goalLeft:Goal;
         public var goalRight:Goal;
@@ -110,8 +115,9 @@ package
 
             dinnerBubble = new FlxSprite(150,15);
             dinnerBubble.loadGraphic(ImgDinner,true,false,370,181)
-            dinnerBubble.addAnimation("appear",[0,1,2,3,4,5,6,7,8,9,10,11,12,13],10)
-            dinnerBubble.addAnimation("disappear",[5,4,3,2,1,0],10)
+            dinnerBubble.addAnimation("appear",[0,1,2,3,4,5,6,7,8,9,10,11,12],10,false)
+            dinnerBubble.addAnimation("hold",[12]);
+            dinnerBubble.addAnimation("disappear",[5,4,3,2,1,0],10,false)
             dinnerBubble.visible = false;
             add(dinnerBubble);
 
@@ -141,7 +147,31 @@ package
                 timeSec++;
             }
 
-            if(timeSec == 180){
+            if(timeSec == gameDurationSeconds){
+                displayDinner();
+            }
+
+            if (callingDinner)
+            {
+                if (dinnerBubble.finished)
+                {
+                    dinnerBubble.play("hold");
+                }
+
+                if (dinnerDisplay > 0)
+                {
+                    dinnerDisplay -= FlxG.elapsed;
+                }
+                else
+                {
+                    fadingDisplay = true;
+                    callingDinner = false;
+                    dinnerBubble.play("disappear");
+                }
+            }
+
+            if (fadingDisplay && dinnerBubble.finished)
+            {
                 FlxG.switchState(new MenuState(goalLeft.score,goalRight.score,true));
             }
 
@@ -190,6 +220,7 @@ package
 
             dinnerBubble.visible = true;
             dinnerBubble.play("appear");
+            callingDinner = true;
 
         }
 
