@@ -17,7 +17,7 @@ package{
             FlxG.mouse.hide();
 
             var t:FlxText;
-            t = new FlxText(200,200,100,"SPACE to play");
+            t = new FlxText(50,50,500,"SPACE to play\n\nARROW KEYS and SHIFT for Player 1 // WASD and SPACE for Player 2");
             t.color = 0xfffffff;
             t.size = 14;
             add(t);
