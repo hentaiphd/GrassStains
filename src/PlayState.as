@@ -168,6 +168,7 @@ package
         }
 
         public function playerOneGrab(p:Player,b:Ball):void{
+
             if (p.state != "falling" && p.state != "fell")
             {
                 if(b.runSpeed > 0)
