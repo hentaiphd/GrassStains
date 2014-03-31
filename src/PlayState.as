@@ -29,7 +29,7 @@ package
         public var netFront:FlxSprite;
         public var net2Back:FlxSprite;
         public var net2Front:FlxSprite;
-        
+
         public var dinnerBubble:FlxSprite;
         public var maxDinnerDisplay:Number = 3;
         public var dinnerDisplay:Number = maxDinnerDisplay;
@@ -53,11 +53,12 @@ package
          [Embed(source="data/sprites/net_back.png")] private var ImgNetBack:Class;
          [Embed(source="data/sprites/net_top.png")] private var ImgNetFront:Class;
          [Embed(source="data/sprites/dinnerSheet.png")] private var ImgDinner:Class;
-
-
+         [Embed(source="../assets/music/bgm2.mp3")] private var Bgm:Class;
 
         override public function create():void
         {
+            FlxG.playMusic(Bgm);
+
             bg = new FlxSprite(0,0,ImgBG);
             this.add(bg);
 
@@ -137,7 +138,6 @@ package
                     alertTimer = false;
                 }
             }
-            debugText.text = ball.velocity.x.toString();
 
             net2Text.text = "P1 Score: " + goalLeft.score.toString();
             net1Text.text = "P2 Score: " + goalRight.score.toString();
@@ -256,7 +256,7 @@ package
                     {
                         b.dribbleOne = true;
                     }
-                }  
+                }
             }
         }
 

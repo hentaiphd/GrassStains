@@ -83,14 +83,6 @@ package{
 
             }
 
-            if(fell){
-                debugText.text = "I fell!";
-            } else {
-                debugText.text = power.toString();
-                debugText.x = this.x-20;
-                debugText.y = this.y-30;
-            }
-
             if(playerNum == 1)
             {
                 playerOneMovement();
