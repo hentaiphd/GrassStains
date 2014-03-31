@@ -26,10 +26,16 @@ package
         public var netFront:FlxSprite;
         public var net2Back:FlxSprite;
         public var net2Front:FlxSprite;
+        public var dinnerBubble:FlxSprite;
+
+        public var dinnerDisplay:Number = 0;
+        public var maxDinnerDisplay:Number = 2;
+
         public var goalLeft:Goal;
         public var goalRight:Goal;
         public var net1Text:FlxText;
         public var net2Text:FlxText;
+        
         public var scoreAlert:FlxText;
         public var alertTimer:Boolean = false;
 
@@ -41,6 +47,7 @@ package
          [Embed(source="data/sprites/shadow.png")] private var ImgShadow:Class;
          [Embed(source="data/sprites/net_back.png")] private var ImgNetBack:Class;
          [Embed(source="data/sprites/net_top.png")] private var ImgNetFront:Class;
+         [Embed(source="data/sprites/dinnerSheet.png")] private var ImgDinner:Class;
 
 
 
@@ -100,6 +107,12 @@ package
             net2Text = new FlxText(20,FlxG.height-30,500,"");
             net2Text.size = 14;
             add(net2Text);
+
+            dinnerBubble = new FlxSprite(150,15);
+            dinnerBubble.loadGraphic(ImgDinner,true,false,370,181)
+            dinnerBubble.addAnimation("appear",[0,1,2,3,4,5,6,7,8,9,10,11,12,13],10)
+            dinnerBubble.addAnimation("disappear",[5,4,3,2,1,0],10)
+            add(dinnerBubble);
 
             scoreAlert = new FlxText(300,200,200,"");
             scoreAlert.size = 40;
