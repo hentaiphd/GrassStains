@@ -168,7 +168,7 @@ package
         public function playerOneGrab(p:Player,b:Ball):void{
             if(b.runSpeed > 0){
                 if(b.kicking == 2){
-                    if(b.velocity.x > 3){
+                    if(b.velocity.x > 3 || b.velocity.x < -3){
                         p.fall(b.velocity);
                     }
                 }
@@ -187,7 +187,7 @@ package
         public function playerTwoGrab(p:Player,b:Ball):void{
             if(b.runSpeed > 0){
                 if(b.kicking == 1){
-                    if(b.velocity.x > 3){
+                    if(b.velocity.x > 3 || b.velocity.x < -3){
                         p.fall(b.velocity);
                     }
                 }

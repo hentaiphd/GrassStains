@@ -41,7 +41,7 @@ package{
             switch (playerNum)
             {
                 case 1:
-                this.loadGraphic(ImgNina,true,false,76,136);
+                this.loadGraphic(ImgNina,true,false,146,140);
                 break;
                 case 2:
                 this.loadGraphic(ImgDiego,true,false,120,144);
