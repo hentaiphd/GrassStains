@@ -30,6 +30,8 @@ package
         public var goalRight:Goal;
         public var net1Text:FlxText;
         public var net2Text:FlxText;
+        public var scoreAlert:FlxText;
+        public var alertTimer:Boolean = false;
 
         public static var groundHeight:Number = 80;
 
@@ -98,11 +100,23 @@ package
             net2Text = new FlxText(20,FlxG.height-30,500,"");
             net2Text.size = 14;
             add(net2Text);
+
+            scoreAlert = new FlxText(300,200,200,"");
+            scoreAlert.size = 40;
+            add(scoreAlert);
         }
 
         override public function update():void
         {
             super.update();
+
+            if(alertTimer){
+                scoreAlert.text = "Score!"
+                if(timeFrame%50 == 0){
+                    scoreAlert.text = "";
+                    alertTimer = false;
+                }
+            }
             debugText.text = ball.velocity.x.toString();
 
             net2Text.text = "P1 Score: " + goalLeft.score.toString();
@@ -163,6 +177,7 @@ package
                     g.score++;
                     FlxG.shake(.001,1);
                     b.resetBall();
+                    alertTimer = true;
                 }
             }
         }
