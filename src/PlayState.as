@@ -120,7 +120,7 @@ package
             //realign shadows w/ locations of objects
 
             p1Shadow.x = playerOne.x - p1Shadow.width/2;
-            p1Shadow.y = playerOne.y; - p1Shadow.height/2 + playerOne.height;
+            p1Shadow.y = playerOne.y - p1Shadow.height/2 + playerOne.height;
 
             p2Shadow.x = playerTwo.x - p2Shadow.width/2;
             p2Shadow.y = playerTwo.y - p2Shadow.height/2;
@@ -174,12 +174,10 @@ package
                 }
             }
 
-            if(!b.dribbleOne){
-                if(!b.dribbleTwo){
-                    if (!b.JUST_KICKED || b.kicking == 2)
-                        {
-                             b.dribbleOne = true;
-                        }
+            if(!b.dribbleOne && !b.dribbleTwo){
+                if (!b.JUST_KICKED)
+                {
+                     b.dribbleOne = true;
                 }
             }
         }
@@ -193,12 +191,10 @@ package
                 }
             }
 
-            if(!b.dribbleOne){
-                if(!b.dribbleTwo){
-                    if (!b.JUST_KICKED || b.kicking == 2)
-                    {
-                         b.dribbleTwo = true;
-                    }
+            if(!b.dribbleOne && !b.dribbleTwo){
+                if (!b.JUST_KICKED)
+                {
+                     b.dribbleTwo = true;
                 }
             }
         }

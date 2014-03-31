@@ -22,7 +22,7 @@ package{
         public var fallSpeed:Number = 0;
         public var gravity:Number = .9;
 
-        public var maxKickStrength:Number = 15;
+        public var maxKickStrength:Number = 100;
 
         public var JUST_KICKED:Boolean = false;
         public var kickTimer:Number = 0;
@@ -69,18 +69,6 @@ package{
             this.acceleration.y = 0;
             this.drag.x = .5;
             this.drag.y = .5;
-
-            if(this.velocity.x > 0){
-                this.velocity.x -= velocityScale;
-            } else if(this.velocity.x < 0){
-                this.velocity.x += velocityScale;
-            }
-
-            if(this.velocity.y > 0){
-                this.velocity.y -= velocityScale;
-            } else if(this.velocity.y < 0){
-                this.velocity.y += velocityScale;
-            }
 
             this.velocity.x += this.acceleration.x;
             this.velocity.y += this.acceleration.y;

@@ -97,7 +97,7 @@ package{
 
                 if(FlxG.keys.pressed("SHIFT"))
                 {
-                    charge();   
+                    charge();
                 }
                 else
                 {
@@ -107,7 +107,6 @@ package{
                         kick();
                     }
                 }
-
             }
 
             if(playerNum == 2)
@@ -183,11 +182,11 @@ package{
             state = "falling";
             air = 1;
             fallSpeed = -10;
-            velocity = _direction;
+            //velocity = _direction;
 
         }
 
-        public function playerOneMovement():void{
+        public function movementController():void{
             if(this.velocity.x > 0){
                 this.velocity.x -= velocityScale;
             } else if(this.velocity.x < 0){
@@ -224,6 +223,10 @@ package{
             if(Math.abs(this.velocity.y) >= maxSpeed){
                 this.velocity.y = (this.velocity.y/Math.abs(this.velocity.y))*maxSpeed;
             }
+        }
+
+        public function playerOneMovement():void{
+            movementController();
 
             if (state == "idle" || state == "run")
             {
@@ -258,46 +261,11 @@ package{
         }
 
         public function playerTwoMovement():void{
-            if(this.velocity.x > 0){
-                this.velocity.x -= velocityScale;
-            } else if(this.velocity.x < 0){
-                this.velocity.x += velocityScale;
-            }
-
-            if(this.velocity.y > 0){
-                this.velocity.y -= velocityScale;
-            } else if(this.velocity.y < 0){
-                this.velocity.y += velocityScale;
-            }
-
-            if(this.acceleration.x > 0){
-                this.acceleration.x -= accelerationScale;
-            } else if(this.acceleration.x < 0){
-                this.acceleration.x += accelerationScale;
-            }
-
-            if(this.acceleration.y > 0){
-                this.acceleration.y -= accelerationScale;
-            } else if(this.acceleration.y < 0){
-                this.acceleration.y += accelerationScale;
-            }
-
-            this.velocity.x += this.acceleration.x;
-            this.velocity.y += this.acceleration.y;
-
-            this.pos.x += velocity.x;
-            this.pos.y += velocity.y;
-
-            if(Math.abs(this.velocity.x) >= maxSpeed){
-                this.velocity.x = (this.velocity.x/Math.abs(this.velocity.x))*maxSpeed;
-            }
-            if(Math.abs(this.velocity.y) >= maxSpeed){
-                this.velocity.y = (this.velocity.y/Math.abs(this.velocity.y))*maxSpeed;
-            }
+            movementController();
 
             if (state == "idle" || state == "run")
             {
-                if(FlxG.keys.A) 
+                if(FlxG.keys.A)
                 {
                     this.facing = LEFT;
                     this.acceleration.x = runSpeed*-1;
