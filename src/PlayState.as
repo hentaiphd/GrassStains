@@ -119,11 +119,11 @@ package
 
             //realign shadows w/ locations of objects
 
-            p1Shadow.x = playerOne.x - p1Shadow.width/2;
-            p1Shadow.y = playerOne.y; - p1Shadow.height/2 + playerOne.height;
+            p1Shadow.x = playerOne.x - p1Shadow.width/2 + playerOne.width/2;
+            p1Shadow.y = playerOne.y - p1Shadow.height/2 + playerOne.height;
 
-            p2Shadow.x = playerTwo.x - p2Shadow.width/2;
-            p2Shadow.y = playerTwo.y - p2Shadow.height/2;
+            p2Shadow.x = playerTwo.x - p2Shadow.width/2 + playerTwo.width/2;
+            p2Shadow.y = playerTwo.y - p2Shadow.height/2 + playerTwo.height;
 
             ballShadow.x = ball.x - ballShadow.width/2;
             ballShadow.y = ball.yPos + ball.height * .75;
