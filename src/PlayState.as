@@ -35,7 +35,7 @@ package
         public var goalRight:Goal;
         public var net1Text:FlxText;
         public var net2Text:FlxText;
-        
+
         public var scoreAlert:FlxText;
         public var alertTimer:Boolean = false;
 
@@ -112,6 +112,7 @@ package
             dinnerBubble.loadGraphic(ImgDinner,true,false,370,181)
             dinnerBubble.addAnimation("appear",[0,1,2,3,4,5,6,7,8,9,10,11,12,13],10)
             dinnerBubble.addAnimation("disappear",[5,4,3,2,1,0],10)
+            dinnerBubble.visible = false;
             add(dinnerBubble);
 
             scoreAlert = new FlxText(300,200,200,"");
@@ -182,6 +183,14 @@ package
             {
                 p2.state = "idle";
             }
+        }
+
+        public function displayDinner():void
+        {
+
+            dinnerBubble.visible = true;
+            dinnerBubble.play("appear");
+
         }
 
         public function score(b:Ball,g:Goal):void{
