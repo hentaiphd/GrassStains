@@ -183,7 +183,6 @@ package{
             state = "falling";
             air = 1;
             fallSpeed = -10;
-            velocity = _direction;
 
         }
 

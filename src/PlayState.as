@@ -137,9 +137,11 @@ package
 
             if(ball.dribbleOne){
                 ball.dribble(playerOne,playerOne.power);
+                FlxG.log("shit is dribbling1");
             }
             if(ball.dribbleTwo){
                 ball.dribble(playerTwo,playerTwo.power);
+                FlxG.log("shit is dribbling2");
             }
         }
 
@@ -166,38 +168,48 @@ package
         }
 
         public function playerOneGrab(p:Player,b:Ball):void{
-            if(b.runSpeed > 0){
-                if(b.kicking == 2){
-                    if(b.velocity.x > 3 || b.velocity.x < -3){
-                        p.fall(b.velocity);
-                    }
-                }
-            }
-
-            if(!b.dribbleOne){
-                if(!b.dribbleTwo){
-                    if (!b.JUST_KICKED || b.kicking == 2)
+            if (p.state != "falling" && p.state != "fell")
+            {
+                if(b.runSpeed > 0)
+                {
+                    if(b.kicking == 2)
+                    {
+                        if(b.velocity.x > 3 || b.velocity.x < -3)
                         {
-                             b.dribbleOne = true;
+                            p.fall(b.velocity);
                         }
-                }
+                        else
+                        {
+                            b.dribbleOne = true;
+                        }
+                    }
+                    else if (!b.dribbleTwo && !b.JUST_KICKED)
+                    {
+                        b.dribbleOne = true;
+                    }
+                }  
             }
         }
 
-        public function playerTwoGrab(p:Player,b:Ball):void{
-            if(b.runSpeed > 0){
-                if(b.kicking == 1){
-                    if(b.velocity.x > 3 || b.velocity.x < -3){
-                        p.fall(b.velocity);
-                    }
-                }
-            }
-
-            if(!b.dribbleOne){
-                if(!b.dribbleTwo){
-                    if (!b.JUST_KICKED || b.kicking == 2)
+        public function playerTwoGrab(p:Player,b:Ball):void
+        {
+            if (p.state != "falling" && p.state != "fell")
+            {
+                if(b.runSpeed > 0)
+                {
+                    if(b.kicking == 1)
                     {
-                         b.dribbleTwo = true;
+                        if(b.velocity.x > 3 || b.velocity.x < -3){
+                            p.fall(b.velocity);
+                        }
+                        else
+                        {
+                            b.dribbleTwo = true;
+                        }
+                    }
+                    else if (!b.dribbleOne && !b.JUST_KICKED)
+                    {
+                        b.dribbleTwo = true;
                     }
                 }
             }

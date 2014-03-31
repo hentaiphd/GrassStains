@@ -7,6 +7,7 @@ package{
 
         public function GrassStains(){
             super(720,480,MenuState);
+            FlxG.debug=true;
         }
     }
 }
