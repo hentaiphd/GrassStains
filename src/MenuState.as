@@ -22,7 +22,7 @@ package{
             t.size = 14;
             add(t);
 
-            score = new FlxText(200,300,500,"");
+            score = new FlxText(200,300,800,"");
             score.color = 0xfffffff;
             score.size = 14;
             add(score);
@@ -32,7 +32,7 @@ package{
             super.update();
 
             if(showscore){
-                score.text = "Player 1 scored " + p1.toString() + " goals!\n Player 2 scored " + p2.toString() + " goals!";
+                score.text = "You got called inside for dinner! Playtime is over!\n\nPlayer 1 scored " + p1.toString() + " goals!\n Player 2 scored " + p2.toString() + " goals!";
             }
 
             if(FlxG.keys.pressed("SPACE")){
