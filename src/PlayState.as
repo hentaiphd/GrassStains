@@ -57,7 +57,7 @@ package
 
         override public function create():void
         {
-            FlxG.playMusic(Bgm);
+            //FlxG.playMusic(Bgm);
 
             bg = new FlxSprite(0,0,ImgBG);
             this.add(bg);
@@ -94,10 +94,10 @@ package
             goalRight.x -= goalRight.width;
             this.add(goalRight);
 
-            playerOne = new Player(200,200,1);
+            playerOne = new Player(400,200,1);
             this.add(playerOne);
 
-            playerTwo = new Player(400,200,2);
+            playerTwo = new Player(200,200,2);
             this.add(playerTwo);
 
             ball = new Ball(350,350);
@@ -106,12 +106,14 @@ package
             add(netFront);
             add(net2Front);
 
-            net1Text = new FlxText(FlxG.width-100,FlxG.height-30,500,"");
+            net1Text = new FlxText(FlxG.width-250,FlxG.height-50,250,"");
             net1Text.size = 14;
+            net1Text.alignment = "center";
             add(net1Text);
 
-            net2Text = new FlxText(20,FlxG.height-30,500,"");
+            net2Text = new FlxText(-10,FlxG.height-50,250,"");
             net2Text.size = 14;
+            net2Text.alignment = "center";
             add(net2Text);
 
             dinnerBubble = new FlxSprite(150,15);
@@ -131,6 +133,14 @@ package
         {
             super.update();
 
+            if(ball.dribbleOne){
+                debugText.text = "";
+            }
+
+            if(ball.dribbleTwo){
+                debugText.text = "";
+            }
+
             if(alertTimer){
                 scoreAlert.text = "Score!"
                 if(timeFrame%50 == 0){
@@ -139,8 +149,8 @@ package
                 }
             }
 
-            net2Text.text = "P1 Score: " + goalLeft.score.toString();
-            net1Text.text = "P2 Score: " + goalRight.score.toString();
+            net2Text.text = "P1 Score: " + goalLeft.score.toString() + "\nMove: WASD / Kick: SPACE";
+            net1Text.text = "P2 Score: " + goalRight.score.toString() + "\nMove: ARROWS / Kick: SHIFT";
 
             timeFrame++;
             if(timeFrame%50 == 0){
@@ -252,9 +262,16 @@ package
                             b.dribbleOne = true;
                         }
                     }
-                    else if (!b.dribbleTwo && !b.JUST_KICKED)
+                    else if (!b.JUST_KICKED)
                     {
                         b.dribbleOne = true;
+                    }
+                }
+
+                if (FlxG.keys.justReleased("SHIFT") && !ball.dribbleTimer){
+                    if(!ball.dribbleOne){
+                        ball.dribbleTwo = false;
+                        ball.dribbleOne = true;
                     }
                 }
             }
@@ -276,9 +293,16 @@ package
                             b.dribbleTwo = true;
                         }
                     }
-                    else if (!b.dribbleOne && !b.JUST_KICKED)
+                    else if (!b.JUST_KICKED)
                     {
                         b.dribbleTwo = true;
+                    }
+                }
+
+                if (FlxG.keys.justReleased("SPACE") && !ball.dribbleTimer){
+                    if(!ball.dribbleTwo){
+                        ball.dribbleOne = false;
+                        ball.dribbleTwo = true;
                     }
                 }
             }

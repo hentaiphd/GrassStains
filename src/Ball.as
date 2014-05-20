@@ -16,6 +16,9 @@ package{
         public var power:Number = 0;
         public var dribbleOne:Boolean = false;
         public var dribbleTwo:Boolean = false;
+        public var timerFrame:Number = 0;
+        public var timerSec:Number = 0;
+        public var dribbleTimer:Boolean = false;
 
         public var yPos:Number;
         public var air:Number = 50;
@@ -53,6 +56,23 @@ package{
             {
                 kickTimer = 0;
                 JUST_KICKED = false;
+            }
+
+            if(dribbleOne || dribbleTwo){
+                timerFrame++;
+                if(timerFrame%50 == 0){
+                    timerSec++;
+                }
+
+                if(timerSec > 2){
+                    dribbleTimer = false;
+                } else {
+                    dribbleTimer = true;
+                }
+
+            } else {
+                timerSec = 0;
+                timerFrame = 0;
             }
         }
 
@@ -128,7 +148,7 @@ package{
                     this.dribbleTwo = false;
                     FlxG.shake(.003,1);
                 } else {
-                    this.x = p.pos.x+(p.scale.x * -40);
+                    this.x = p.pos.x+(p.scale.x * -60);
                     this.yPos = (p.pos.y+p.height)-25;
                 }
             }
